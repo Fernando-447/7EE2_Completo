@@ -1,0 +1,291 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
+ */
+package vista.HerramientasRotas;
+
+import dao.HerramientaRotaDAO;
+import java.awt.Color;
+import java.io.FileOutputStream;
+import java.util.List;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import modelo.HerramientasRotasModelo;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.FontFactory;
+import com.itextpdf.text.Phrase;
+import javax.swing.JTextField;
+import javax.swing.RowFilter;
+import javax.swing.table.TableRowSorter;
+import javax.swing.*;
+import javax.swing.table.*;
+
+/**
+ *
+ * @author nataly
+ */
+public class HerramientasRotas extends javax.swing.JFrame {
+
+    /**
+     * Creates new form HerramientasRotas
+     */
+    public HerramientasRotas() {
+        initComponents();
+        cargarHerramientasEnTabla(tbl_Datos);
+        
+        configurarFiltro(tbl_Datos, txtBuscador);
+      
+    }
+    
+    public void cargarHerramientasEnTabla(JTable tbl_Datos) {
+    HerramientaRotaDAO dao = new HerramientaRotaDAO();
+    List<HerramientasRotasModelo> lista = dao.obtenerTodasHerramientas();
+
+    // Columnas que mostraremos
+    String[] columnas = {"Nombre", "Ubicación", "Descripción"};
+    DefaultTableModel modelo = new DefaultTableModel(columnas, 0);
+
+    // Rellenar filas
+    for (HerramientasRotasModelo h : lista) {
+        Object[] fila = {
+            h.getNombre(),
+            h.getUbicacion(),
+            h.getDescripcion()
+        };
+        modelo.addRow(fila);
+    }
+
+    // Asignar modelo a la tabla
+    tbl_Datos.setModel(modelo);
+}   
+    // metodo para exportar todo en el pdf
+    public static void exportarTablaComoPDF(JTable tabla, String rutaArchivo) {
+        Document documento = new Document() {};
+
+        try {
+            PdfWriter.getInstance(documento, new FileOutputStream(rutaArchivo));
+            documento.open();
+
+            // Título
+            Paragraph titulo = new Paragraph("Listado de Herramientas Rotas", FontFactory.getFont(FontFactory.HELVETICA_BOLD, 18));
+            titulo.setAlignment(Element.ALIGN_CENTER);
+            documento.add(titulo);
+            documento.add(new Paragraph(" ")); // Espacio
+
+            // Crear tabla PDF
+            TableModel modelo = tabla.getModel();
+            PdfPTable tablaPDF = new PdfPTable(modelo.getColumnCount());
+            tablaPDF.setWidthPercentage(100);
+
+            // Agregar encabezados
+            for (int i = 0; i < modelo.getColumnCount(); i++) {
+                tablaPDF.addCell(new PdfPCell(new Phrase(modelo.getColumnName(i))));
+            }
+
+            // Agregar filas
+            for (int fila = 0; fila < modelo.getRowCount(); fila++) {
+                for (int col = 0; col < modelo.getColumnCount(); col++) {
+                    Object valor = modelo.getValueAt(fila, col);
+                    tablaPDF.addCell(valor != null ? valor.toString() : "");
+                }
+            }
+
+            documento.add(tablaPDF);
+            documento.close();
+
+            System.out.println("PDF generado correctamente en: " + rutaArchivo);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    // metodo buscador 
+    
+    public void configurarFiltro(JTable tabla, JTextField txtBuscar) {
+        TableModel modelo = tabla.getModel();
+        TableRowSorter<TableModel> rowSorter = new TableRowSorter<>(modelo);
+        tabla.setRowSorter(rowSorter);
+
+        txtBuscar.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
+            @Override
+            public void insertUpdate(javax.swing.event.DocumentEvent e) {
+                filtrar();
+            }
+
+            @Override
+            public void removeUpdate(javax.swing.event.DocumentEvent e) {
+                filtrar();
+            }
+
+            @Override
+            public void changedUpdate(javax.swing.event.DocumentEvent e) {
+                filtrar();
+            }
+
+            private void filtrar() {
+                String texto = txtBuscar.getText();
+                if (texto.trim().length() == 0) {
+                    rowSorter.setRowFilter(null);
+                } else {
+                    // (?i) hace la búsqueda case-insensitive
+                    rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + texto));
+                }
+            }
+        });
+    }
+    
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        jPanel1 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tbl_Datos = new javax.swing.JTable();
+        txtBuscador = new javax.swing.JTextField();
+        jButton2 = new javax.swing.JButton();
+        jPanel3 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jPanel1.setBackground(new java.awt.Color(0, 51, 102));
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        tbl_Datos.setBackground(new java.awt.Color(255, 255, 255));
+        tbl_Datos.setFont(new java.awt.Font("Roboto Black", 1, 12)); // NOI18N
+        tbl_Datos.setForeground(new java.awt.Color(255, 255, 255));
+        tbl_Datos.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
+            },
+            new String [] {
+                "ID", "Imagen", "Nombre ", "Ubicacion", "Descripcion"
+            }
+        ));
+        tbl_Datos.setFocusable(false);
+        tbl_Datos.setSelectionBackground(new java.awt.Color(0, 51, 153));
+        jScrollPane1.setViewportView(tbl_Datos);
+
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 110, 580, 180));
+
+        txtBuscador.setBackground(new java.awt.Color(255, 255, 255));
+        txtBuscador.setForeground(new java.awt.Color(0, 0, 0));
+        txtBuscador.setText("Buscar");
+        jPanel1.add(txtBuscador, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 80, 580, 20));
+
+        jButton2.setBackground(new java.awt.Color(51, 153, 0));
+        jButton2.setFont(new java.awt.Font("Roboto Condensed SemiBold", 0, 12)); // NOI18N
+        jButton2.setText("DESCARGAR");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 300, 100, 30));
+
+        jPanel3.setBackground(new java.awt.Color(0, 0, 51));
+
+        jLabel1.setFont(new java.awt.Font("Roboto Condensed Black", 0, 24)); // NOI18N
+        jLabel1.setText("HERRAMIENTAS ROTAS");
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap(208, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addGap(216, 216, 216))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(16, 16, 16)
+                .addComponent(jLabel1)
+                .addContainerGap(15, Short.MAX_VALUE))
+        );
+
+        jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 660, 60));
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 344, Short.MAX_VALUE)
+        );
+
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        String rutaDocumentos = System.getProperty("user.home") + "/Downloads/Herramientas_Rotas.pdf";
+
+        exportarTablaComoPDF(tbl_Datos,rutaDocumentos);
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(HerramientasRotas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(HerramientasRotas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(HerramientasRotas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(HerramientasRotas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new HerramientasRotas().setVisible(true);
+            }
+        });
+    }
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton2;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable tbl_Datos;
+    private javax.swing.JTextField txtBuscador;
+    // End of variables declaration//GEN-END:variables
+}
