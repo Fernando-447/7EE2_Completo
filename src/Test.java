@@ -1,5 +1,6 @@
 
 import conexion.ConexionDB;
+import vista.Alumnos.RegistrarAlumno;
 import vista.HerramientasRotas.HerramientasRotas;
 import vista.RegistroDocente.RegistroDocente;
 
@@ -15,7 +16,7 @@ public class Test {
 
     public static void main(String[] args) {
         
-        RegistroDocente ver =new RegistroDocente();
+        HerramientasRotas ver =new HerramientasRotas ();
         ver.setVisible(true);
         
         

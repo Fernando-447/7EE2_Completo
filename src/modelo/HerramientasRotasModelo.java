@@ -11,8 +11,18 @@ package modelo;
 public class HerramientasRotasModelo {
    private String nombre; 
    private String ubicacion;
-   private String descripcion; 
+   private String descripcion;
+   private int id;
    private byte[]imagenHeramienta;
+   private String estado;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
    
    //ConstructorVacio
    public HerramientasRotasModelo(){};
@@ -20,15 +30,25 @@ public class HerramientasRotasModelo {
    
    //Constructor
 
-    public HerramientasRotasModelo(String nombre, String ubicacion, String descripcion, byte[] imagenHeramienta) {
+    public HerramientasRotasModelo(String nombre, String ubicacion, String descripcion, byte[] imagenHeramienta,String estado,int id){
         this.nombre = nombre;
+        this.id = id;
         this.ubicacion = ubicacion;
         this.descripcion = descripcion;
         this.imagenHeramienta = imagenHeramienta;
+        this.estado=estado;
     }
 //Getters setters 
     public String getNombre() {
         return nombre;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
+    public String getEstado() {
+        return estado;
     }
 
     public void setNombre(String nombre) {

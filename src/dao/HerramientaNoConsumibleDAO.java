@@ -14,14 +14,15 @@ import java.sql.*;
  *
  * @author nataly
  */
-public class HerramientaRotaDAO{
+public class HerramientaNoConsumibleDAO{
+    
     ConexionDB conn=new ConexionDB();
     public Connection conexion=conn.getConexion();
    
      // Método para obtener todas las herramientas rotas
-    public List<HerramientasRotasModelo> obtenerTodasHerramientas() {
+    public List<HerramientasRotasModelo> obtenerTodasHerramientasNoConsumiblesRotas() {
         List<HerramientasRotasModelo> lista = new ArrayList<>();
-        String sql = "SELECT nombre, ubicacion, descripcion, imagenHeramienta FROM HerramientasRotas";
+        String sql = "SELECT nombre, ubicacion, descripcion,estado , idHerramienta FROM herramientaconsumible WHERE estado='ROTO'";
 
         try (Statement stmt = conexion.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
@@ -31,7 +32,9 @@ public class HerramientaRotaDAO{
                 herramienta.setNombre(rs.getString("nombre"));
                 herramienta.setUbicacion(rs.getString("ubicacion"));
                 herramienta.setDescripcion(rs.getString("descripcion"));
-                herramienta.setImagenHeramienta(rs.getBytes("imagenHeramienta")); // imagen como byte[]
+                
+                herramienta.setEstado(rs.getString("estado"));
+                herramienta.setId(rs.getInt("idHerramienta"));
                 lista.add(herramienta);
             }
 

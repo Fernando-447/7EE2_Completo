@@ -4,8 +4,8 @@
  */
 package vista.HerramientasRotas;
 
-import dao.HerramientaRotaDAO;
-import java.awt.Color;
+import dao.HerramientaNoConsumibleDAO;
+import dao.HerramientasConsumiblesDAO;
 import java.io.FileOutputStream;
 import java.util.List;
 import javax.swing.JTable;
@@ -13,20 +13,18 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import modelo.HerramientasRotasModelo;
 import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfPCell;
-import com.itextpdf.text.Font;
 import com.itextpdf.text.FontFactory;
 import com.itextpdf.text.Phrase;
+import java.util.ArrayList;
+import javax.swing.ButtonGroup;
 import javax.swing.JTextField;
 import javax.swing.RowFilter;
 import javax.swing.table.TableRowSorter;
-import javax.swing.*;
-import javax.swing.table.*;
 
 /**
  *
@@ -38,27 +36,63 @@ public class HerramientasRotas extends javax.swing.JFrame {
      * Creates new form HerramientasRotas
      */
     public HerramientasRotas() {
-        initComponents();
-        cargarHerramientasEnTabla(tbl_Datos);
+        initComponents(); 
+        // Agrupar radio buttons
+    ButtonGroup grupoBotones = new ButtonGroup();
+    grupoBotones.add(rbHerramientasConsumibles);
+    grupoBotones.add(jRadioButton1);
+
+    rbHerramientasConsumibles.setSelected(true);  // Seleccionado por defecto
+    cargarHerramientasConsumiblesEnTabla(tbl_Datos);
+    configurarFiltro(tbl_Datos,txtBuscador);
+    
         
-        configurarFiltro(tbl_Datos, txtBuscador);
+        
+        
       
     }
-    
-    public void cargarHerramientasEnTabla(JTable tbl_Datos) {
-    HerramientaRotaDAO dao = new HerramientaRotaDAO();
-    List<HerramientasRotasModelo> lista = dao.obtenerTodasHerramientas();
+        // metodo para mostrar todas las herramientas  no consumibles rotas 
 
+    public void cargarHerramientasNoConsumiblesEnTabla(JTable tbl_Datos) {
+    HerramientaNoConsumibleDAO dao = new HerramientaNoConsumibleDAO();
+    
+    List<HerramientasRotasModelo> lista = dao.obtenerTodasHerramientasNoConsumiblesRotas();
+    
     // Columnas que mostraremos
-    String[] columnas = {"Nombre", "Ubicación", "Descripción"};
+    String[] columnas = {"ID", "Nombre", "Descripción","Ubicacion"};
     DefaultTableModel modelo = new DefaultTableModel(columnas, 0);
 
     // Rellenar filas
     for (HerramientasRotasModelo h : lista) {
         Object[] fila = {
+            h.getId(),
             h.getNombre(),
-            h.getUbicacion(),
-            h.getDescripcion()
+            h.getDescripcion(),
+            h.getUbicacion()
+        };
+        modelo.addRow(fila);
+    }
+
+    // Asignar modelo a la tabla
+    tbl_Datos.setModel(modelo);
+}  
+    
+    // metodo para mostrar todas las herramientas consumibles rotas 
+    public void cargarHerramientasConsumiblesEnTabla(JTable tbl_Datos) {
+    HerramientasConsumiblesDAO dao = new HerramientasConsumiblesDAO();
+    List<HerramientasRotasModelo> lista = dao.obtenerTodasHerramientasConsumiblesRotas();
+    if(lista == null) System.out.print("no hay nada en la lista ");
+    // Columnas que mostraremos
+    String[] columnas = {"ID","Nombre","Descripcion","Ubicaion"};
+    DefaultTableModel modelo = new DefaultTableModel(columnas, 0);
+
+    // Rellenar filas
+    for (HerramientasRotasModelo h : lista) {
+        Object[] fila = {
+            h.getId(),
+            h.getNombre(),
+            h.getDescripcion(),
+            h.getUbicacion()
         };
         modelo.addRow(fila);
     }
@@ -66,8 +100,14 @@ public class HerramientasRotas extends javax.swing.JFrame {
     // Asignar modelo a la tabla
     tbl_Datos.setModel(modelo);
 }   
+    
+    
+    
+    
+    //PDF
+    
     // metodo para exportar todo en el pdf
-    public static void exportarTablaComoPDF(JTable tabla, String rutaArchivo) {
+    public  void exportarTablaComoPDF(JTable tabla, String rutaArchivo) {
         Document documento = new Document() {};
 
         try {
@@ -75,10 +115,19 @@ public class HerramientasRotas extends javax.swing.JFrame {
             documento.open();
 
             // Título
-            Paragraph titulo = new Paragraph("Listado de Herramientas Rotas", FontFactory.getFont(FontFactory.HELVETICA_BOLD, 18));
+            if(rbHerramientasConsumibles.isSelected()){
+            Paragraph titulo = new Paragraph("Listado de Herramientas Consumibles Rotas", FontFactory.getFont(FontFactory.HELVETICA_BOLD, 18));
             titulo.setAlignment(Element.ALIGN_CENTER);
             documento.add(titulo);
-            documento.add(new Paragraph(" ")); // Espacio
+            documento.add(new Paragraph(" ")); // Espacio}
+            }else {
+            Paragraph titulo = new Paragraph("Listado de Herramientas No Consumibles Rotas", FontFactory.getFont(FontFactory.HELVETICA_BOLD, 18));
+            titulo.setAlignment(Element.ALIGN_CENTER);
+            documento.add(titulo);
+            documento.add(new Paragraph(" ")); // Espacio}
+            
+            }
+            
 
             // Crear tabla PDF
             TableModel modelo = tabla.getModel();
@@ -159,6 +208,9 @@ public class HerramientasRotas extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
+        lblRegresar = new javax.swing.JLabel();
+        jRadioButton1 = new javax.swing.JRadioButton();
+        rbHerramientasConsumibles = new javax.swing.JRadioButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -166,8 +218,8 @@ public class HerramientasRotas extends javax.swing.JFrame {
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         tbl_Datos.setBackground(new java.awt.Color(255, 255, 255));
-        tbl_Datos.setFont(new java.awt.Font("Roboto Black", 1, 12)); // NOI18N
-        tbl_Datos.setForeground(new java.awt.Color(255, 255, 255));
+        tbl_Datos.setFont(new java.awt.Font("Roboto Condensed", 0, 12)); // NOI18N
+        tbl_Datos.setForeground(new java.awt.Color(0, 0, 0));
         tbl_Datos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},
@@ -183,12 +235,17 @@ public class HerramientasRotas extends javax.swing.JFrame {
         tbl_Datos.setSelectionBackground(new java.awt.Color(0, 51, 153));
         jScrollPane1.setViewportView(tbl_Datos);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 110, 580, 180));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 140, 800, 190));
 
         txtBuscador.setBackground(new java.awt.Color(255, 255, 255));
         txtBuscador.setForeground(new java.awt.Color(0, 0, 0));
         txtBuscador.setText("Buscar");
-        jPanel1.add(txtBuscador, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 80, 580, 20));
+        txtBuscador.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtBuscadorActionPerformed(evt);
+            }
+        });
+        jPanel1.add(txtBuscador, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 70, 790, 20));
 
         jButton2.setBackground(new java.awt.Color(51, 153, 0));
         jButton2.setFont(new java.awt.Font("Roboto Condensed SemiBold", 0, 12)); // NOI18N
@@ -198,51 +255,106 @@ public class HerramientasRotas extends javax.swing.JFrame {
                 jButton2ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 300, 100, 30));
+        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 350, 100, 30));
 
         jPanel3.setBackground(new java.awt.Color(0, 0, 51));
 
         jLabel1.setFont(new java.awt.Font("Roboto Condensed Black", 0, 24)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("HERRAMIENTAS ROTAS");
+
+        lblRegresar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/zImagenes/regresar.png"))); // NOI18N
+        lblRegresar.setText("jLabel2");
+        lblRegresar.setMaximumSize(new java.awt.Dimension(40, 40));
+        lblRegresar.setMinimumSize(new java.awt.Dimension(40, 40));
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(208, Short.MAX_VALUE)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(27, 27, 27)
+                .addComponent(lblRegresar, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(239, 239, 239)
                 .addComponent(jLabel1)
-                .addGap(216, 216, 216))
+                .addContainerGap(322, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(16, 16, 16)
-                .addComponent(jLabel1)
-                .addContainerGap(15, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(lblRegresar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jLabel1)))
+                .addGap(14, 14, 14))
         );
 
-        jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 660, 60));
+        jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 870, 60));
+
+        jRadioButton1.setBackground(new java.awt.Color(0, 51, 102));
+        jRadioButton1.setForeground(new java.awt.Color(255, 255, 255));
+        jRadioButton1.setText("HerramientasNoConsumibles");
+        jRadioButton1.setBorder(null);
+        jRadioButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButton1ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jRadioButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 100, -1, -1));
+
+        rbHerramientasConsumibles.setBackground(new java.awt.Color(0, 51, 102));
+        rbHerramientasConsumibles.setForeground(new java.awt.Color(255, 255, 255));
+        rbHerramientasConsumibles.setText("HerramientasConsumibles");
+        rbHerramientasConsumibles.setBorder(null);
+        rbHerramientasConsumibles.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rbHerramientasConsumiblesActionPerformed(evt);
+            }
+        });
+        jPanel1.add(rbHerramientasConsumibles, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 100, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 866, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 344, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 402, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        String rutaDocumentos = System.getProperty("user.home") + "/Downloads/Herramientas_Rotas.pdf";
+       if (rbHerramientasConsumibles.isSelected()){
+        String rutaDocumentos = System.getProperty("user.home") + "/Downloads/Herramientas_Consumibles_Rotas.pdf";
+
+        exportarTablaComoPDF(tbl_Datos,rutaDocumentos);}
+       else{
+       String rutaDocumentos = System.getProperty("user.home") + "/Downloads/Herramientas_No_Consumibles_Rotas.pdf";
 
         exportarTablaComoPDF(tbl_Datos,rutaDocumentos);
+       
+       }
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void rbHerramientasConsumiblesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbHerramientasConsumiblesActionPerformed
+       cargarHerramientasConsumiblesEnTabla(tbl_Datos);
+    }//GEN-LAST:event_rbHerramientasConsumiblesActionPerformed
+
+    private void jRadioButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton1ActionPerformed
+       cargarHerramientasNoConsumiblesEnTabla(tbl_Datos);
+    }//GEN-LAST:event_jRadioButton1ActionPerformed
+
+    private void txtBuscadorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBuscadorActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtBuscadorActionPerformed
 
     /**
      * @param args the command line arguments
@@ -284,7 +396,10 @@ public class HerramientasRotas extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JRadioButton jRadioButton1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblRegresar;
+    private javax.swing.JRadioButton rbHerramientasConsumibles;
     private javax.swing.JTable tbl_Datos;
     private javax.swing.JTextField txtBuscador;
     // End of variables declaration//GEN-END:variables

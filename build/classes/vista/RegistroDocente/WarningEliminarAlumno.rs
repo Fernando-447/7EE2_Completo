@@ -1,3 +1,0 @@
-vista.Alumnos.WarningEliminarAlumno$2
-vista.Alumnos.WarningEliminarAlumno
-vista.Alumnos.WarningEliminarAlumno$1
