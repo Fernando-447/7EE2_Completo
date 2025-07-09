@@ -3,28 +3,48 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package vista.HerramientasRotas;
+// Paquete actual
 
+// DAO y modelo
 import dao.HerramientaNoConsumibleDAO;
 import dao.HerramientasConsumiblesDAO;
-import java.io.FileOutputStream;
-import java.util.List;
-import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 import modelo.HerramientasRotasModelo;
-import com.itextpdf.text.Document;
-import com.itextpdf.text.Element;
-import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.pdf.PdfWriter;
-import com.itextpdf.text.pdf.PdfPTable;
-import com.itextpdf.text.pdf.PdfPCell;
-import com.itextpdf.text.FontFactory;
-import com.itextpdf.text.Phrase;
-import java.util.ArrayList;
+
+// Java estándar
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.List;
+
+// Swing
 import javax.swing.ButtonGroup;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.RowFilter;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
+
+// iText para PDF (v5.x)
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.FontFactory;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+
+// Apache POI para Excel
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
 
 /**
  *
@@ -36,98 +56,92 @@ public class HerramientasRotas extends javax.swing.JFrame {
      * Creates new form HerramientasRotas
      */
     public HerramientasRotas() {
-        initComponents(); 
+        initComponents();
         // Agrupar radio buttons
-    ButtonGroup grupoBotones = new ButtonGroup();
-    grupoBotones.add(rbHerramientasConsumibles);
-    grupoBotones.add(jRadioButton1);
+        ButtonGroup grupoBotones = new ButtonGroup();
+        grupoBotones.add(rbHerramientasConsumibles);
+        grupoBotones.add(jRadioButton1);
 
-    rbHerramientasConsumibles.setSelected(true);  // Seleccionado por defecto
-    cargarHerramientasConsumiblesEnTabla(tbl_Datos);
-    configurarFiltro(tbl_Datos,txtBuscador);
-    
-        
-        
-        
-      
+        rbHerramientasConsumibles.setSelected(true);  // Seleccionado por defecto
+        cargarHerramientasConsumiblesEnTabla(tbl_Datos);
+        configurarFiltro(tbl_Datos, txtBuscador);
+
     }
-        // metodo para mostrar todas las herramientas  no consumibles rotas 
+    // metodo para mostrar todas las herramientas  no consumibles rotas 
 
     public void cargarHerramientasNoConsumiblesEnTabla(JTable tbl_Datos) {
-    HerramientaNoConsumibleDAO dao = new HerramientaNoConsumibleDAO();
-    
-    List<HerramientasRotasModelo> lista = dao.obtenerTodasHerramientasNoConsumiblesRotas();
-    
-    // Columnas que mostraremos
-    String[] columnas = {"ID", "Nombre", "Descripción","Ubicacion"};
-    DefaultTableModel modelo = new DefaultTableModel(columnas, 0);
+        HerramientaNoConsumibleDAO dao = new HerramientaNoConsumibleDAO();
 
-    // Rellenar filas
-    for (HerramientasRotasModelo h : lista) {
-        Object[] fila = {
-            h.getId(),
-            h.getNombre(),
-            h.getDescripcion(),
-            h.getUbicacion()
-        };
-        modelo.addRow(fila);
+        List<HerramientasRotasModelo> lista = dao.obtenerTodasHerramientasNoConsumiblesRotas();
+
+        // Columnas que mostraremos
+        String[] columnas = {"ID", "Nombre", "Descripción", "Ubicacion"};
+        DefaultTableModel modelo = new DefaultTableModel(columnas, 0);
+
+        // Rellenar filas
+        for (HerramientasRotasModelo h : lista) {
+            Object[] fila = {
+                h.getId(),
+                h.getNombre(),
+                h.getDescripcion(),
+                h.getUbicacion()
+            };
+            modelo.addRow(fila);
+        }
+
+        // Asignar modelo a la tabla
+        tbl_Datos.setModel(modelo);
     }
 
-    // Asignar modelo a la tabla
-    tbl_Datos.setModel(modelo);
-}  
-    
     // metodo para mostrar todas las herramientas consumibles rotas 
     public void cargarHerramientasConsumiblesEnTabla(JTable tbl_Datos) {
-    HerramientasConsumiblesDAO dao = new HerramientasConsumiblesDAO();
-    List<HerramientasRotasModelo> lista = dao.obtenerTodasHerramientasConsumiblesRotas();
-    if(lista == null) System.out.print("no hay nada en la lista ");
-    // Columnas que mostraremos
-    String[] columnas = {"ID","Nombre","Descripcion","Ubicaion"};
-    DefaultTableModel modelo = new DefaultTableModel(columnas, 0);
+        HerramientasConsumiblesDAO dao = new HerramientasConsumiblesDAO();
+        List<HerramientasRotasModelo> lista = dao.obtenerTodasHerramientasConsumiblesRotas();
+        if (lista == null) {
+            System.out.print("no hay nada en la lista ");
+        }
+        // Columnas que mostraremos
+        String[] columnas = {"ID", "Nombre", "Descripcion", "Ubicaion"};
+        DefaultTableModel modelo = new DefaultTableModel(columnas, 0);
 
-    // Rellenar filas
-    for (HerramientasRotasModelo h : lista) {
-        Object[] fila = {
-            h.getId(),
-            h.getNombre(),
-            h.getDescripcion(),
-            h.getUbicacion()
-        };
-        modelo.addRow(fila);
+        // Rellenar filas
+        for (HerramientasRotasModelo h : lista) {
+            Object[] fila = {
+                h.getId(),
+                h.getNombre(),
+                h.getDescripcion(),
+                h.getUbicacion()
+            };
+            modelo.addRow(fila);
+        }
+
+        // Asignar modelo a la tabla
+        tbl_Datos.setModel(modelo);
     }
 
-    // Asignar modelo a la tabla
-    tbl_Datos.setModel(modelo);
-}   
-    
-    
-    
-    
     //PDF
-    
     // metodo para exportar todo en el pdf
-    public  void exportarTablaComoPDF(JTable tabla, String rutaArchivo) {
-        Document documento = new Document() {};
+    public void exportarTablaComoPDF(JTable tabla, String rutaArchivo) {
+        Document documento = new Document() {
+        };
 
         try {
             PdfWriter.getInstance(documento, new FileOutputStream(rutaArchivo));
             documento.open();
 
             // Título
-            if(rbHerramientasConsumibles.isSelected()){
-            Paragraph titulo = new Paragraph("Listado de Herramientas Consumibles Rotas", FontFactory.getFont(FontFactory.HELVETICA_BOLD, 18));
-            titulo.setAlignment(Element.ALIGN_CENTER);
-            documento.add(titulo);
-            documento.add(new Paragraph(" ")); // Espacio}
-            }else {
-            Paragraph titulo = new Paragraph("Listado de Herramientas No Consumibles Rotas", FontFactory.getFont(FontFactory.HELVETICA_BOLD, 18));
-            titulo.setAlignment(Element.ALIGN_CENTER);
-            documento.add(titulo);
-            documento.add(new Paragraph(" ")); // Espacio}
-            
+            if (rbHerramientasConsumibles.isSelected()) {
+                Paragraph titulo = new Paragraph("Listado de Herramientas Consumibles Rotas", FontFactory.getFont(FontFactory.HELVETICA_BOLD, 18));
+                titulo.setAlignment(Element.ALIGN_CENTER);
+                documento.add(titulo);
+                documento.add(new Paragraph(" ")); // Espacio}
+            } else {
+                Paragraph titulo = new Paragraph("Listado de Herramientas No Consumibles Rotas", FontFactory.getFont(FontFactory.HELVETICA_BOLD, 18));
+                titulo.setAlignment(Element.ALIGN_CENTER);
+                documento.add(titulo);
+                documento.add(new Paragraph(" ")); // Espacio}
+
             }
-            
 
             // Crear tabla PDF
             TableModel modelo = tabla.getModel();
@@ -156,8 +170,116 @@ public class HerramientasRotas extends javax.swing.JFrame {
             e.printStackTrace();
         }
     }
+
+    // metodo para cambiar el nombre del documento 
+    public void cambiarNombreDocumentoPDF() {
+        if (rbHerramientasConsumibles.isSelected()) {
+            String rutaDocumentos = System.getProperty("user.home") + "/Downloads/Herramientas_Consumibles_Rotas.pdf";
+
+            exportarTablaComoPDF(tbl_Datos, rutaDocumentos);
+        } else {
+            String rutaDocumentos = System.getProperty("user.home") + "/Downloads/Herramientas_No_Consumibles_Rotas.pdf";
+
+            exportarTablaComoPDF(tbl_Datos, rutaDocumentos);
+
+        }
+    }
+
+    public void cambiarNombreDocumentoExcel() {
+        String rutaDocumentos;
+        if (rbHerramientasConsumibles.isSelected()) {
+            rutaDocumentos = System.getProperty("user.home") + "/Downloads/Herramientas_Consumibles_Rotas.xlsx";
+        } else {
+            rutaDocumentos = System.getProperty("user.home") + "/Downloads/Herramientas_No_Consumibles_Rotas.xlsx";
+        }
+        exportarTablaComoExcel(tbl_Datos, rutaDocumentos);
+    }
+
+    //metodo para poder exportar en excel
+public void exportarTablaComoExcel(JTable tabla, String rutaArchivo) {
+    try {
+        // Crear libro y hoja
+        XSSFWorkbook workbook = new XSSFWorkbook();
+        Sheet hoja = workbook.createSheet("Datos");
+
+        // Obtener modelo de tabla
+        TableModel modelo = tabla.getModel();
+        int filaActual = 0;
+
+        // Título
+        Row filaTitulo = hoja.createRow(filaActual++);
+        Cell celdaTitulo = filaTitulo.createCell(0);
+        String tituloTexto = rbHerramientasConsumibles.isSelected()
+                ? "Listado de Herramientas Consumibles Rotas"
+                : "Listado de Herramientas No Consumibles Rotas";
+        celdaTitulo.setCellValue(tituloTexto);
+
+        // Fusionar celdas para el título
+        hoja.addMergedRegion(new CellRangeAddress(0, 0, 0, modelo.getColumnCount() - 1));
+
+        // Encabezados
+        Row filaEncabezados = hoja.createRow(filaActual++);
+        for (int col = 0; col < modelo.getColumnCount(); col++) {
+            Cell celda = filaEncabezados.createCell(col);
+            celda.setCellValue(modelo.getColumnName(col));
+        }
+
+        // Datos
+        for (int fila = 0; fila < modelo.getRowCount(); fila++) {
+            Row filaExcel = hoja.createRow(fila + filaActual);
+            for (int col = 0; col < modelo.getColumnCount(); col++) {
+                Object valor = modelo.getValueAt(fila, col);
+                Cell celda = filaExcel.createCell(col);
+                celda.setCellValue(valor != null ? valor.toString() : "");
+            }
+        }
+
+        // Ajustar columnas
+        for (int i = 0; i < modelo.getColumnCount(); i++) {
+            hoja.autoSizeColumn(i);
+        }
+
+        // Guardar archivo
+        try (FileOutputStream archivoSalida = new FileOutputStream(rutaArchivo)) {
+            workbook.write(archivoSalida);
+        }
+
+        workbook.close();
+        System.out.println("Excel generado correctamente en: " + rutaArchivo);
+
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}
+
+
+    // metodo paea mostrar mensaje de desrcarga 
+    private void mostrarDialogoDescarga() {
+        Object[] opciones = {"PDF", "Excel"};
+
+        int seleccion = JOptionPane.showOptionDialog(
+                this,
+                "¿En qué formato deseas descargar?",
+                "Seleccionar formato",
+                JOptionPane.DEFAULT_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                opciones,
+                opciones[0]
+        );
+
+        if (seleccion == 0) {
+            System.out.println("El usuario eligió PDF.");
+            cambiarNombreDocumentoPDF();
+        } else if (seleccion == 1) {
+            System.out.println("El usuario eligió Excel.");
+            cambiarNombreDocumentoExcel();
+        } else {
+            System.out.println("El usuario canceló o cerró el diálogo.");
+        }
+    }
+
     // metodo buscador 
-    
     public void configurarFiltro(JTable tabla, JTextField txtBuscar) {
         TableModel modelo = tabla.getModel();
         TableRowSorter<TableModel> rowSorter = new TableRowSorter<>(modelo);
@@ -190,7 +312,6 @@ public class HerramientasRotas extends javax.swing.JFrame {
             }
         });
     }
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -332,24 +453,16 @@ public class HerramientasRotas extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-       if (rbHerramientasConsumibles.isSelected()){
-        String rutaDocumentos = System.getProperty("user.home") + "/Downloads/Herramientas_Consumibles_Rotas.pdf";
 
-        exportarTablaComoPDF(tbl_Datos,rutaDocumentos);}
-       else{
-       String rutaDocumentos = System.getProperty("user.home") + "/Downloads/Herramientas_No_Consumibles_Rotas.pdf";
-
-        exportarTablaComoPDF(tbl_Datos,rutaDocumentos);
-       
-       }
+        mostrarDialogoDescarga();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void rbHerramientasConsumiblesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbHerramientasConsumiblesActionPerformed
-       cargarHerramientasConsumiblesEnTabla(tbl_Datos);
+        cargarHerramientasConsumiblesEnTabla(tbl_Datos);
     }//GEN-LAST:event_rbHerramientasConsumiblesActionPerformed
 
     private void jRadioButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton1ActionPerformed
-       cargarHerramientasNoConsumiblesEnTabla(tbl_Datos);
+        cargarHerramientasNoConsumiblesEnTabla(tbl_Datos);
     }//GEN-LAST:event_jRadioButton1ActionPerformed
 
     private void txtBuscadorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBuscadorActionPerformed

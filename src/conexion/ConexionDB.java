@@ -19,9 +19,9 @@ public class ConexionDB {
             try {
                 Class.forName("com.mysql.cj.jdbc.Driver");
                 conn = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/pruebaHerramientasDB", 
+                    "jdbc:mysql://localhost:3306/base1", 
                     "root", 
-                    "linux123"
+                    "Linux12345"
                 );
                 System.out.println("Conexión exitosa a la BD");
             } catch (ClassNotFoundException | SQLException e) {
