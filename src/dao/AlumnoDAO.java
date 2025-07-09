@@ -18,7 +18,7 @@ public class AlumnoDAO {
     Connection conexion = conn.getConexion();
 
     public boolean insertarAlumno(AlumnoModelo alumno) {
-        String sql = "INSERT INTO alumnos (nombre, apellido_paterno, apellido_materno, no_control) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO alumno (nombre, apellidopaterno, apellidomaterno, nocontrol) VALUES (?, ?, ?, ?)";
 
         try (PreparedStatement stmt = conexion.prepareStatement(sql)) {
 

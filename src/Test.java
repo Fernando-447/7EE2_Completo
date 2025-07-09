@@ -3,6 +3,7 @@ import conexion.ConexionDB;
 import vista.Alumnos.RegistrarAlumno;
 import vista.HerramientasRotas.HerramientasRotas;
 import vista.RegistroDocente.RegistroDocente;
+import vista.Alumnos.Alumno;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -16,7 +17,7 @@ public class Test {
 
     public static void main(String[] args) {
         
-        HerramientasRotas ver =new HerramientasRotas ();
+        RegistrarAlumno ver =new RegistrarAlumno ();
         ver.setVisible(true);
         
         
