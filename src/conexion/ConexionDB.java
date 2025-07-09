@@ -19,7 +19,7 @@ public class ConexionDB {
             try {
                 Class.forName("com.mysql.cj.jdbc.Driver");
                 conn = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/base1", 
+                    "jdbc:mysql://localhost:3306/pruebaHerramientasDB", 
                     "root", 
                     "Linux12345"
                 );

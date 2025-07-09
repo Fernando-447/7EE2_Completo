@@ -45,7 +45,6 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-
 /**
  *
  * @author nataly
@@ -164,7 +163,7 @@ public class HerramientasRotas extends javax.swing.JFrame {
             documento.add(tablaPDF);
             documento.close();
 
-            System.out.println("PDF generado correctamente en: " + rutaArchivo);
+            JOptionPane.showMessageDialog(null, "PDF generado correctamente en: " + rutaArchivo);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -196,62 +195,61 @@ public class HerramientasRotas extends javax.swing.JFrame {
     }
 
     //metodo para poder exportar en excel
-public void exportarTablaComoExcel(JTable tabla, String rutaArchivo) {
-    try {
-        // Crear libro y hoja
-        XSSFWorkbook workbook = new XSSFWorkbook();
-        Sheet hoja = workbook.createSheet("Datos");
+    public void exportarTablaComoExcel(JTable tabla, String rutaArchivo) {
+        try {
+            // Crear libro y hoja
+            XSSFWorkbook workbook = new XSSFWorkbook();
+            Sheet hoja = workbook.createSheet("Datos");
 
-        // Obtener modelo de tabla
-        TableModel modelo = tabla.getModel();
-        int filaActual = 0;
+            // Obtener modelo de tabla
+            TableModel modelo = tabla.getModel();
+            int filaActual = 0;
 
-        // Título
-        Row filaTitulo = hoja.createRow(filaActual++);
-        Cell celdaTitulo = filaTitulo.createCell(0);
-        String tituloTexto = rbHerramientasConsumibles.isSelected()
-                ? "Listado de Herramientas Consumibles Rotas"
-                : "Listado de Herramientas No Consumibles Rotas";
-        celdaTitulo.setCellValue(tituloTexto);
+            // Título
+            Row filaTitulo = hoja.createRow(filaActual++);
+            Cell celdaTitulo = filaTitulo.createCell(0);
+            String tituloTexto = rbHerramientasConsumibles.isSelected()
+                    ? "Listado de Herramientas Consumibles Rotas"
+                    : "Listado de Herramientas No Consumibles Rotas";
+            celdaTitulo.setCellValue(tituloTexto);
 
-        // Fusionar celdas para el título
-        hoja.addMergedRegion(new CellRangeAddress(0, 0, 0, modelo.getColumnCount() - 1));
+            // Fusionar celdas para el título
+            hoja.addMergedRegion(new CellRangeAddress(0, 0, 0, modelo.getColumnCount() - 1));
 
-        // Encabezados
-        Row filaEncabezados = hoja.createRow(filaActual++);
-        for (int col = 0; col < modelo.getColumnCount(); col++) {
-            Cell celda = filaEncabezados.createCell(col);
-            celda.setCellValue(modelo.getColumnName(col));
-        }
-
-        // Datos
-        for (int fila = 0; fila < modelo.getRowCount(); fila++) {
-            Row filaExcel = hoja.createRow(fila + filaActual);
+            // Encabezados
+            Row filaEncabezados = hoja.createRow(filaActual++);
             for (int col = 0; col < modelo.getColumnCount(); col++) {
-                Object valor = modelo.getValueAt(fila, col);
-                Cell celda = filaExcel.createCell(col);
-                celda.setCellValue(valor != null ? valor.toString() : "");
+                Cell celda = filaEncabezados.createCell(col);
+                celda.setCellValue(modelo.getColumnName(col));
             }
+
+            // Datos
+            for (int fila = 0; fila < modelo.getRowCount(); fila++) {
+                Row filaExcel = hoja.createRow(fila + filaActual);
+                for (int col = 0; col < modelo.getColumnCount(); col++) {
+                    Object valor = modelo.getValueAt(fila, col);
+                    Cell celda = filaExcel.createCell(col);
+                    celda.setCellValue(valor != null ? valor.toString() : "");
+                }
+            }
+
+            // Ajustar columnas
+            for (int i = 0; i < modelo.getColumnCount(); i++) {
+                hoja.autoSizeColumn(i);
+            }
+
+            // Guardar archivo
+            try (FileOutputStream archivoSalida = new FileOutputStream(rutaArchivo)) {
+                workbook.write(archivoSalida);
+            }
+
+            workbook.close();
+            JOptionPane.showMessageDialog(null, "Excel generado correctamente en: " + rutaArchivo);
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
-        // Ajustar columnas
-        for (int i = 0; i < modelo.getColumnCount(); i++) {
-            hoja.autoSizeColumn(i);
-        }
-
-        // Guardar archivo
-        try (FileOutputStream archivoSalida = new FileOutputStream(rutaArchivo)) {
-            workbook.write(archivoSalida);
-        }
-
-        workbook.close();
-        System.out.println("Excel generado correctamente en: " + rutaArchivo);
-
-    } catch (Exception e) {
-        e.printStackTrace();
     }
-}
-
 
     // metodo paea mostrar mensaje de desrcarga 
     private void mostrarDialogoDescarga() {
