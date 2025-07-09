@@ -7,6 +7,8 @@ package dao;
 import conexion.ConexionDB;
 import modelo.AlumnoModelo;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -30,6 +32,76 @@ public class AlumnoDAO {
             int filasInsertadas = stmt.executeUpdate();
             return filasInsertadas > 0;
 
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    
+    // Leer todos los alumnos
+    public List<AlumnoModelo> obtenerTodosLosAlumnos() {
+        List<AlumnoModelo> lista = new ArrayList<>();
+        String sql = "SELECT * FROM alumno";
+        try (PreparedStatement stmt = conexion.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                AlumnoModelo alumno = new AlumnoModelo();
+                alumno.setNombre(rs.getString("nombre"));
+                alumno.setApellidoPaterno(rs.getString("apellidopaterno"));
+                alumno.setApellidoMaterno(rs.getString("apellidomaterno"));
+                alumno.setNoControl(rs.getInt("nocontrol"));
+                lista.add(alumno);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return lista;
+    }
+
+    // Leer uno por número de control
+    public AlumnoModelo obtenerAlumnoPorNoControl(int noControl) {
+        String sql = "SELECT * FROM alumno WHERE nocontrol = ?";
+        try (PreparedStatement stmt = conexion.prepareStatement(sql)) {
+            stmt.setInt(1, noControl);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    AlumnoModelo alumno = new AlumnoModelo();
+                    alumno.setNombre(rs.getString("nombre"));
+                    alumno.setApellidoPaterno(rs.getString("apellidopaterno"));
+                    alumno.setApellidoMaterno(rs.getString("apellidomaterno"));
+                    alumno.setNoControl(rs.getInt("nocontrol"));
+                    return alumno;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    // Actualizar por número de control (lo recibe como parámetro)
+    public boolean actualizarAlumnoPorNoControl(int noControl, AlumnoModelo alumnoActualizado) {
+        String sql = "UPDATE alumno SET nombre = ?, apellidopaterno = ?, apellidomaterno = ? WHERE nocontrol = ?";
+        try (PreparedStatement stmt = conexion.prepareStatement(sql)) {
+            stmt.setString(1, alumnoActualizado.getNombre());
+            stmt.setString(2, alumnoActualizado.getApellidoPaterno());
+            stmt.setString(3, alumnoActualizado.getApellidoMaterno());
+            stmt.setInt(4, noControl); // el nocontrol que se quiere actualizar
+            int filasActualizadas = stmt.executeUpdate();
+            return filasActualizadas > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    // Eliminar por número de control
+    public boolean eliminarAlumnoPorNoControl(int noControl) {
+        String sql = "DELETE FROM alumno WHERE nocontrol = ?";
+        try (PreparedStatement stmt = conexion.prepareStatement(sql)) {
+            stmt.setInt(1, noControl);
+            int filasEliminadas = stmt.executeUpdate();
+            return filasEliminadas > 0;
         } catch (SQLException e) {
             e.printStackTrace();
             return false;

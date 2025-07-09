@@ -4,17 +4,84 @@
  */
 package vista.RegistroDocente;
 
+import dao.DocenteDAO;
+import javax.swing.JOptionPane;
+import modelo.DocenteModelo;
+
 /**
  *
  * @author nataly
  */
 public class ActualizarDocente extends javax.swing.JFrame {
+DocenteDAO Docentedao = new DocenteDAO();
+    int id;
 
     /**
      * Creates new form ActualizarDocente
      */
-    public ActualizarDocente() {
+    public ActualizarDocente(int id) {
+        this.id = id;
         initComponents();
+        cargarDatosDocente();
+    }
+
+    private void cargarDatosDocente() {
+        try {
+            DocenteModelo docente = Docentedao.obtenerDocentePorId(id);
+
+            if (docente != null) {
+                jTextField3.setText(docente.getNombre());
+                jTextField4.setText(docente.getApellidoPaterno());
+                jTextField2.setText(docente.getApellidoMaterno());
+            } else {
+                JOptionPane.showMessageDialog(this, "Docente no encontrado.", "Error", JOptionPane.ERROR_MESSAGE);
+                dispose(); // cerrar ventana si no se encuentra
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error al cargar datos del docente.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    public void actualizarDocente() {
+        try {
+            DocenteModelo docenteActual = Docentedao.obtenerDocentePorId(id);
+
+            if (docenteActual == null) {
+                JOptionPane.showMessageDialog(this, "No se encontró el docente con ese ID.");
+                return;
+            }
+
+            // Crear objeto con datos nuevos
+            DocenteModelo docenteActualizado = new DocenteModelo();
+            docenteActualizado.setIdDocente(docenteActual.getIdDocente());
+
+            String nuevoNombre = jTextField3.getText().trim();
+            String nuevoApellidoP = jTextField4.getText().trim();
+            String nuevoApellidoM = jTextField2.getText().trim();
+
+            docenteActualizado.setNombre(
+                    nuevoNombre.isEmpty() ? docenteActual.getNombre() : nuevoNombre
+            );
+            docenteActualizado.setApellidoPaterno(
+                    nuevoApellidoP.isEmpty() ? docenteActual.getApellidoPaterno() : nuevoApellidoP
+            );
+            docenteActualizado.setApellidoMaterno(
+                    nuevoApellidoM.isEmpty() ? docenteActual.getApellidoMaterno() : nuevoApellidoM
+            );
+
+            boolean actualizado = Docentedao.actualizarDocentePorId(id, docenteActualizado);
+
+            if (actualizado) {
+                JOptionPane.showMessageDialog(this, "Docente actualizado correctamente.");
+            } else {
+                JOptionPane.showMessageDialog(this, "No se pudo actualizar el docente.");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error al actualizar: " + e.getMessage());
+        }
     }
 
     /**
@@ -63,19 +130,11 @@ public class ActualizarDocente extends javax.swing.JFrame {
                 .addGap(22, 22, 22))
         );
 
-        jTextField3.setBackground(new java.awt.Color(255, 255, 255));
-        jTextField3.setForeground(new java.awt.Color(0, 0, 0));
         jTextField3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField3ActionPerformed(evt);
             }
         });
-
-        jTextField4.setBackground(new java.awt.Color(255, 255, 255));
-        jTextField4.setForeground(new java.awt.Color(0, 0, 0));
-
-        jTextField2.setBackground(new java.awt.Color(255, 255, 255));
-        jTextField2.setForeground(new java.awt.Color(0, 0, 0));
 
         jLabel5.setFont(new java.awt.Font("Roboto Condensed Medium", 0, 14)); // NOI18N
         jLabel5.setText("Apellido Materno:");
@@ -89,6 +148,11 @@ public class ActualizarDocente extends javax.swing.JFrame {
         jButton1.setBackground(new java.awt.Color(51, 102, 0));
         jButton1.setFont(new java.awt.Font("Roboto SemiCondensed Black", 0, 12)); // NOI18N
         jButton1.setText("ACTUALIZAR");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -153,6 +217,11 @@ public class ActualizarDocente extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField3ActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        actualizarDocente();
+        this.dispose();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -183,7 +252,8 @@ public class ActualizarDocente extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ActualizarDocente().setVisible(true);
+                DocenteModelo docente = new DocenteModelo();
+                new ActualizarDocente(docente.getIdDocente()).setVisible(true);
             }
         });
     }

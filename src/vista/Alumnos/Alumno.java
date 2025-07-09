@@ -4,18 +4,111 @@
  */
 package vista.Alumnos;
 
+import dao.AlumnoDAO;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.RowFilter;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
+import modelo.AlumnoModelo;
+
 /**
  *
  * @author nataly
  */
 public class Alumno extends javax.swing.JFrame {
-
+    RegistrarAlumno vista = new RegistrarAlumno();
+    AlumnoDAO alumnos = new AlumnoDAO();
+    
+    
     /**
      * Creates new form RegistrarAlumno
      */
     public Alumno() {
         initComponents();
+        mostrarAlumnos();
+        buscarEnTabla(jTable1,jTextField1);
     }
+
+    public void mostrarAlumnos() {
+    try {
+        List<AlumnoModelo> alumnoss = alumnos.obtenerTodosLosAlumnos();
+
+        // Crear columnas para el JTable
+        String[] columnas = {"No. Control", "Nombre", "Apellido Paterno", "Apellido Materno"};
+        DefaultTableModel modelo = new DefaultTableModel(columnas, 0); // 0 = filas iniciales
+
+        for (AlumnoModelo alumno : alumnoss) {
+            Object[] fila = {
+                alumno.getNoControl(),
+                alumno.getNombre(),
+                alumno.getApellidoPaterno(),
+                alumno.getApellidoMaterno()
+            };
+            modelo.addRow(fila);
+        }
+
+        jTable1.setModel(modelo);
+
+        // Agregar MouseListener para detectar clics en la tabla
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                int filaSeleccionada = jTable1.getSelectedRow();
+                if (filaSeleccionada != -1) {
+                    int noControl = (int) jTable1.getValueAt(filaSeleccionada, 0); // Columna 0 = No. Control
+
+                    // Abrir el nuevo JFrame y pasar el número de control
+                    DetailAlumno detalle = new DetailAlumno(noControl);
+                    detalle.setVisible(true);
+                }
+            }
+        });
+
+    } catch (Exception e) {
+        e.printStackTrace();
+        JOptionPane.showMessageDialog(null, "Error al mostrar alumnos: " + e.getMessage());
+    }
+    
+    
+}  
+    //metodo buscador 
+    public void buscarEnTabla(JTable tabla, JTextField campoBusqueda) {
+    TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>((DefaultTableModel) tabla.getModel());
+    tabla.setRowSorter(sorter);
+
+    campoBusqueda.getDocument().addDocumentListener(new DocumentListener() {
+        @Override
+        public void insertUpdate(DocumentEvent e) {
+            filtrar();
+        }
+
+        @Override
+        public void removeUpdate(DocumentEvent e) {
+            filtrar();
+        }
+
+        @Override
+        public void changedUpdate(DocumentEvent e) {
+            filtrar();
+        }
+
+        private void filtrar() {
+            String texto = campoBusqueda.getText();
+            if (texto.trim().length() == 0) {
+                sorter.setRowFilter(null);
+            } else {
+                sorter.setRowFilter(RowFilter.regexFilter("(?i)" + texto));
+            }
+        }
+    });
+}
+
+    
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -143,7 +236,8 @@ public class Alumno extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+     vista.setVisible(true);
+     
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**

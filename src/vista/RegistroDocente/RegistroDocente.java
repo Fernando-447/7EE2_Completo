@@ -14,36 +14,61 @@ import modelo.DocenteModelo;
  * @author nataly
  */
 public class RegistroDocente extends javax.swing.JFrame {
-    DocenteDAO dao = new DocenteDAO();
-    
-    public void registrarDocente(){
-        try{
-    DocenteModelo docente = new DocenteModelo();    
-    docente.setNombre(txtNombreDoc.getText());
-    docente.setApellidoPaterno(txtApellidoMDoc.getText());
-    docente.setApellidoMaterno(txtApellidoPDoc.getText());
-    
-    dao.insertarDocente(docente);
-        JOptionPane.showConfirmDialog(rootPane, "si sirve");
-        }
-        catch(NullPointerException e){
-        JOptionPane.showMessageDialog(null,"error el usuario no se pudo registrar"+e);
-        System.out.print(e);
-        };
-    }
 
+    DocenteDAO dao = new DocenteDAO();
+
+    public void registrarDocente() {
+        try {
+            // Validación simple de campos vacíos
+            if (txtNombreDoc.getText().trim().isEmpty()
+                    || txtApellidoMDoc.getText().trim().isEmpty()
+                    || txtApellidoPDoc.getText().trim().isEmpty()) {
+
+                JOptionPane.showMessageDialog(this,
+                        "Todos los campos son obligatorios.",
+                        "Campos vacíos",
+                        JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            // Crear modelo y llenar con datos del formulario
+            DocenteModelo docente = new DocenteModelo();
+            docente.setNombre(txtNombreDoc.getText().trim());
+            docente.setApellidoPaterno(txtApellidoMDoc.getText().trim());
+            docente.setApellidoMaterno(txtApellidoPDoc.getText().trim());
+
+            // Insertar docente
+            boolean registrado = dao.insertarDocente(docente);
+
+            if (registrado) {
+                JOptionPane.showMessageDialog(this,
+                        "Docente registrado correctamente.",
+                        "Éxito",
+                        JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(this,
+                        "No se pudo registrar el docente.",
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this,
+                    "Ocurrió un error al registrar el docente:\n" + e.getMessage(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
+    }
 
     private JTextField txtNombre, txtApellidoPaterno, txtApellidoMaterno, txtCorreo;
     private JButton btnAceptar;
-   
 
     /**
      * Creates new form RegistroDocente
      */
     public RegistroDocente() {
-                initComponents();
-
-        
+        initComponents();
 
     }
 
@@ -158,6 +183,7 @@ public class RegistroDocente extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         registrarDocente();
+        this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void txtNombreDocActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombreDocActionPerformed

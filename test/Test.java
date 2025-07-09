@@ -1,5 +1,7 @@
 
+import vista.Alumnos.Alumno;
 import vista.HerramientasRotas.HerramientasRotas;
+import vista.RegistroDocente.Docente;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -13,7 +15,7 @@ import vista.HerramientasRotas.HerramientasRotas;
 public class Test {
 
     public static void main(String[] args) {
-      HerramientasRotas vista = new HerramientasRotas();
+      Docente vista = new Docente();
       vista.setVisible(true);
     }
 }

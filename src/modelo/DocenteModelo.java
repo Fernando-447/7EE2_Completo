@@ -12,12 +12,22 @@ public class DocenteModelo {
     private String nombre;
     private String apellidoPaterno;
     private String apellidoMaterno;
+    private int idDocente;
+
+    public int getIdDocente() {
+        return idDocente;
+    }
+
+    public void setIdDocente(int idDocente) {
+        this.idDocente = idDocente;
+    }
     
 //constructor
-    public DocenteModelo(String nombre, String apellidoPaterno, String apellidoMaterno) {
+    public DocenteModelo(String nombre, String apellidoPaterno, String apellidoMaterno, int idDocente) {
         this.nombre = nombre;
         this.apellidoPaterno = apellidoPaterno;
         this.apellidoMaterno = apellidoMaterno;
+        this.idDocente = idDocente;
     }
     public DocenteModelo(){};
 //getter

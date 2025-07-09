@@ -4,19 +4,38 @@
  */
 package vista.Alumnos;
 
+import dao.AlumnoDAO;
+import modelo.AlumnoModelo;
+
 /**
  *
  * @author nataly
  */
 public class DetailAlumno extends javax.swing.JFrame {
 
+    int numeroControl;
+    AlumnoDAO alumno = new AlumnoDAO();
+    
     /**
      * Creates new form RegistrarAlumno
      */
-    public DetailAlumno() {
+    public DetailAlumno(int numeroControl) {
+        this.numeroControl = numeroControl;
         initComponents();
+        mostrarDetallesAlumno();
     }
 
+    public void mostrarDetallesAlumno() {
+        AlumnoModelo alumnoo = alumno.obtenerAlumnoPorNoControl(numeroControl);
+        jTextField1.setText(alumnoo.getNombre());
+        jTextField3.setText(alumnoo.getApellidoPaterno());
+        jTextField4.setText(alumnoo.getApellidoMaterno());
+        jTextField2.setText(String.valueOf(alumnoo.getNoControl()));
+
+    }
+
+    ;
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -90,35 +109,35 @@ public class DetailAlumno extends javax.swing.JFrame {
         jLabel6.setFont(new java.awt.Font("Roboto Condensed Medium", 0, 14)); // NOI18N
         jLabel6.setText("No.Control:");
 
-        jTextField1.setBackground(new java.awt.Color(255, 255, 255));
-        jTextField1.setForeground(new java.awt.Color(0, 0, 0));
         jTextField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField1ActionPerformed(evt);
             }
         });
 
-        jTextField2.setBackground(new java.awt.Color(255, 255, 255));
-        jTextField2.setForeground(new java.awt.Color(0, 0, 0));
-
-        jTextField3.setBackground(new java.awt.Color(255, 255, 255));
-        jTextField3.setForeground(new java.awt.Color(0, 0, 0));
         jTextField3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField3ActionPerformed(evt);
             }
         });
 
-        jTextField4.setBackground(new java.awt.Color(255, 255, 255));
-        jTextField4.setForeground(new java.awt.Color(0, 0, 0));
-
         jButton1.setBackground(new java.awt.Color(153, 0, 0));
         jButton1.setFont(new java.awt.Font("Roboto Condensed SemiBold", 0, 12)); // NOI18N
         jButton1.setText("ELIMINAR");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setBackground(new java.awt.Color(51, 153, 0));
         jButton2.setFont(new java.awt.Font("Roboto Condensed SemiBold", 0, 12)); // NOI18N
         jButton2.setText("ACTUALIZAR");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -199,6 +218,16 @@ public class DetailAlumno extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField1ActionPerformed
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        ActualizarAlumno vistaActualizar = new ActualizarAlumno(numeroControl);
+        vistaActualizar.setVisible(true);
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        WarningEliminarAlumno vistaEliminar = new WarningEliminarAlumno(numeroControl);
+        vistaEliminar.setVisible(true);
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -230,7 +259,8 @@ public class DetailAlumno extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new DetailAlumno().setVisible(true);
+                AlumnoModelo alumno = new AlumnoModelo();
+                new DetailAlumno(alumno.getNoControl()).setVisible(true);
             }
         });
     }

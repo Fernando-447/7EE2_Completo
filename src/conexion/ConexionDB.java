@@ -21,7 +21,7 @@ public class ConexionDB {
                 conn = DriverManager.getConnection(
                     "jdbc:mysql://localhost:3306/pruebaHerramientasDB", 
                     "root", 
-                    "linux123"
+                    "Linux12345"
                 );
                 System.out.println("Conexión exitosa a la BD");
             } catch (ClassNotFoundException | SQLException e) {
