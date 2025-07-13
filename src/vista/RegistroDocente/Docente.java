@@ -21,14 +21,16 @@ import modelo.DocenteModelo;
  * @author nataly
  */
 public class Docente extends javax.swing.JFrame {
-RegistroDocente vista = new RegistroDocente();
+
+    RegistroDocente vista = new RegistroDocente();
+
     /**
      * Creates new form Docente
      */
     public Docente() {
         initComponents();
         mostrarDocentes();
-        buscarEnTabla(jTable1, jTextField1);
+
     }
 
     public void mostrarDocentes() {
@@ -50,6 +52,10 @@ RegistroDocente vista = new RegistroDocente();
             }
 
             jTable1.setModel(modelo);
+            buscarEnTabla(jTable1, jTextField1);
+
+            jTable1.revalidate();
+            jTable1.repaint();
 
             // Agregar clic para ir a detalles
             jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -114,12 +120,12 @@ RegistroDocente vista = new RegistroDocente();
         lblRegresar = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(0, 51, 102));
 
-        jTable1.setBackground(new java.awt.Color(255, 255, 255));
         jTable1.setFont(new java.awt.Font("Roboto Black", 0, 12)); // NOI18N
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -165,8 +171,6 @@ RegistroDocente vista = new RegistroDocente();
                 .addContainerGap(18, Short.MAX_VALUE))
         );
 
-        jTextField1.setBackground(new java.awt.Color(255, 255, 255));
-        jTextField1.setForeground(new java.awt.Color(0, 0, 0));
         jTextField1.setText("Buscar");
 
         jButton1.setBackground(new java.awt.Color(0, 153, 0));
@@ -175,6 +179,13 @@ RegistroDocente vista = new RegistroDocente();
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
+            }
+        });
+
+        jButton2.setText("actualizar");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
             }
         });
 
@@ -192,6 +203,10 @@ RegistroDocente vista = new RegistroDocente();
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 679, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(56, 56, 56))
             .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(307, 307, 307)
+                .addComponent(jButton2)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -203,7 +218,9 @@ RegistroDocente vista = new RegistroDocente();
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 35, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton2)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -223,8 +240,12 @@ RegistroDocente vista = new RegistroDocente();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-    vista.setVisible(true);
+        vista.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        mostrarDocentes();
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -263,6 +284,7 @@ RegistroDocente vista = new RegistroDocente();
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;

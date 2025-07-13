@@ -12,25 +12,31 @@ import modelo.DocenteModelo;
  * @author andre
  */
 public class DetailsDocente extends javax.swing.JFrame {
+
     int id;
     DocenteDAO docenteDAO = new DocenteDAO();
 
     /**
      * Creates new form DetailsDocente
      */
-    public DetailsDocente(int id ) {
-        this.id =id;
+    public DetailsDocente(int id) {
+        this.id = id;
         initComponents();
         mostrarDetallesDocente();
+        //  campos no editables
+        jTextField2.setEditable(false); // Apellido Materno
+        jTextField3.setEditable(false); // Nombre
+        jTextField4.setEditable(false); // Apellido Paterno
+
     }
-    
-    public  void mostrarDetallesDocente() {
-    DocenteModelo docente = docenteDAO.obtenerDocentePorId(id);
-    jTextField3.setText(docente.getNombre());
-    jTextField4.setText(docente.getApellidoPaterno());
-    jTextField2.setText(docente.getApellidoMaterno());
-   
-}
+
+    public void mostrarDetallesDocente() {
+        DocenteModelo docente = docenteDAO.obtenerDocentePorId(id);
+        jTextField3.setText(docente.getNombre());
+        jTextField4.setText(docente.getApellidoPaterno());
+        jTextField2.setText(docente.getApellidoMaterno());
+
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -179,12 +185,12 @@ public class DetailsDocente extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField3ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        WarningEliminarDocente vistaEliminar =new WarningEliminarDocente(id);
+        WarningEliminarDocente vistaEliminar = new WarningEliminarDocente(id);
         vistaEliminar.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-       ActualizarDocente vistaActualizar =new ActualizarDocente(id);
+        ActualizarDocente vistaActualizar = new ActualizarDocente(id);
         vistaActualizar.setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
 

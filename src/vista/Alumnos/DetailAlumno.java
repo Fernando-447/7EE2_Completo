@@ -15,7 +15,7 @@ public class DetailAlumno extends javax.swing.JFrame {
 
     int numeroControl;
     AlumnoDAO alumno = new AlumnoDAO();
-    
+
     /**
      * Creates new form RegistrarAlumno
      */
@@ -23,6 +23,12 @@ public class DetailAlumno extends javax.swing.JFrame {
         this.numeroControl = numeroControl;
         initComponents();
         mostrarDetallesAlumno();
+        // propiedad no editables 
+        jTextField1.setEditable(false); // Nombre
+        jTextField2.setEditable(false); // No. Control
+        jTextField3.setEditable(false); // Apellido Paterno
+        jTextField4.setEditable(false); // Apellido Materno
+
     }
 
     public void mostrarDetallesAlumno() {
