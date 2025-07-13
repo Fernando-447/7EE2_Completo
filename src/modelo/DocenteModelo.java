@@ -9,25 +9,27 @@ package modelo;
  * @author nataly
  */
 public class DocenteModelo {
+    private int numTraDoc;
     private String nombre;
     private String apellidoPaterno;
     private String apellidoMaterno;
-    private int idDocente;
 
-    public int getIdDocente() {
-        return idDocente;
+    public int getNumTraDoc() {
+        return numTraDoc;
     }
 
-    public void setIdDocente(int idDocente) {
-        this.idDocente = idDocente;
+    public void setNumTraDoc(int numTraDoc) {
+        this.numTraDoc = numTraDoc;
     }
+
+   
     
 //constructor
-    public DocenteModelo(String nombre, String apellidoPaterno, String apellidoMaterno, int idDocente) {
+    public DocenteModelo(String nombre, String apellidoPaterno, String apellidoMaterno, int numTraDoc) {
         this.nombre = nombre;
         this.apellidoPaterno = apellidoPaterno;
         this.apellidoMaterno = apellidoMaterno;
-        this.idDocente = idDocente;
+        this.numTraDoc = numTraDoc;
     }
     public DocenteModelo(){};
 //getter

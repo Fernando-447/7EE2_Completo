@@ -20,7 +20,7 @@ public class AlumnoDAO {
     Connection conexion = conn.getConexion();
 
     public boolean insertarAlumno(AlumnoModelo alumno) {
-        String sql = "INSERT INTO alumno (nombre, apellidopaterno, apellidomaterno, nocontrol) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO alumno (nomAlu, apePatAlu, apeMatAlu, numConAlu) VALUES (?, ?, ?, ?)";
 
         try (PreparedStatement stmt = conexion.prepareStatement(sql)) {
 
@@ -46,10 +46,10 @@ public class AlumnoDAO {
              ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
                 AlumnoModelo alumno = new AlumnoModelo();
-                alumno.setNombre(rs.getString("nombre"));
-                alumno.setApellidoPaterno(rs.getString("apellidopaterno"));
-                alumno.setApellidoMaterno(rs.getString("apellidomaterno"));
-                alumno.setNoControl(rs.getInt("nocontrol"));
+                alumno.setNombre(rs.getString("nomAlu"));
+                alumno.setApellidoPaterno(rs.getString("apePatAlu"));
+                alumno.setApellidoMaterno(rs.getString("apeMatAlu"));
+                alumno.setNoControl(rs.getInt("numConAlu"));
                 lista.add(alumno);
             }
         } catch (SQLException e) {
@@ -60,16 +60,16 @@ public class AlumnoDAO {
 
     // Leer uno por número de control
     public AlumnoModelo obtenerAlumnoPorNoControl(int noControl) {
-        String sql = "SELECT * FROM alumno WHERE nocontrol = ?";
+        String sql = "SELECT * FROM alumno WHERE numConAlu = ?";
         try (PreparedStatement stmt = conexion.prepareStatement(sql)) {
             stmt.setInt(1, noControl);
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     AlumnoModelo alumno = new AlumnoModelo();
-                    alumno.setNombre(rs.getString("nombre"));
-                    alumno.setApellidoPaterno(rs.getString("apellidopaterno"));
-                    alumno.setApellidoMaterno(rs.getString("apellidomaterno"));
-                    alumno.setNoControl(rs.getInt("nocontrol"));
+                    alumno.setNombre(rs.getString("nomAlu"));
+                    alumno.setApellidoPaterno(rs.getString("apePatAlu"));
+                    alumno.setApellidoMaterno(rs.getString("apeMatAlu"));
+                    alumno.setNoControl(rs.getInt("numConAlu"));
                     return alumno;
                 }
             }
@@ -81,7 +81,7 @@ public class AlumnoDAO {
 
     // Actualizar por número de control (lo recibe como parámetro)
     public boolean actualizarAlumnoPorNoControl(int noControl, AlumnoModelo alumnoActualizado) {
-        String sql = "UPDATE alumno SET nombre = ?, apellidopaterno = ?, apellidomaterno = ? WHERE nocontrol = ?";
+        String sql = "UPDATE alumno SET nomAlu = ?, apePatAlu = ?, apeMatAlu = ? WHERE numConAlu = ?";
         try (PreparedStatement stmt = conexion.prepareStatement(sql)) {
             stmt.setString(1, alumnoActualizado.getNombre());
             stmt.setString(2, alumnoActualizado.getApellidoPaterno());
@@ -97,7 +97,7 @@ public class AlumnoDAO {
 
     // Eliminar por número de control
     public boolean eliminarAlumnoPorNoControl(int noControl) {
-        String sql = "DELETE FROM alumno WHERE nocontrol = ?";
+        String sql = "DELETE FROM alumno WHERE numConAlu = ?";
         try (PreparedStatement stmt = conexion.prepareStatement(sql)) {
             stmt.setInt(1, noControl);
             int filasEliminadas = stmt.executeUpdate();

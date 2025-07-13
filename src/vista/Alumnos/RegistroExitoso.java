@@ -14,7 +14,11 @@ public class RegistroExitoso extends javax.swing.JFrame {
      * Creates new form RegistroExitoso
      */
     public RegistroExitoso() {
+        setUndecorated(true);
+
         initComponents();
+        setLocationRelativeTo(null);
+
     }
 
     /**
@@ -49,7 +53,7 @@ public class RegistroExitoso extends javax.swing.JFrame {
                 jButton1ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 130, 90, 40));
+        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 130, 110, 40));
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/zImagenes/Sin título-2.png"))); // NOI18N
         jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(-16, -14, 400, 290));

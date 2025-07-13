@@ -1,0 +1,103 @@
+-- Crear la base de datos
+CREATE DATABASE ProyectoV3;
+
+-- Seleccionar la base de datos
+USE ProyectoV3;
+
+-- Crear la tabla Alumno
+CREATE TABLE Alumno (
+    numConAlu VARCHAR(10) NOT NULL,
+    apePatAlu VARCHAR(20) NOT NULL DEFAULT 'Sin apellido Paterno',
+    apeMatAlu VARCHAR(20) NOT NULL,
+    nomAlu VARCHAR(20) NOT NULL,
+    
+    CONSTRAINT pk_cveAlu PRIMARY KEY (numConAlu)
+);
+
+-- Crear la tabla Docente
+CREATE TABLE Docente (alumno
+    numTraDoc SMALLINT NOT NULL,
+    nom VARCHAR(50) NOT NULL,
+    apePat VARCHAR(50) NOT NULL DEFAULT 'Sin apellido Paterno',
+    apeMat VARCHAR(50) NOT NULL DEFAULT 'Sin apellido Materno',
+    
+    CONSTRAINT pk_cveDoc PRIMARY KEY (numTraDoc)
+    
+);
+
+CREATE TABLE MaterialNoConsumible (
+    cveMatNoCon INT NOT NULL,
+    codUTNG VARCHAR(15) NOT NULL UNIQUE,
+    desMatNoCon VARCHAR(100) DEFAULT 'Sin descripcion',
+    estMatNoCon ENUM('Roto', 'Desgastado', 'Regular') NOT NULL DEFAULT 'Regular',
+    disposicion ENUM('En stock', 'Prestada') NOT NULL DEFAULT 'En stock',
+
+
+    CONSTRAINT pk_cveMatNoCon PRIMARY KEY (cveMatNoCon)
+);
+
+
+CREATE TABLE MaterialConsumible (
+    cveMatCon INT NOT NULL,
+    desMatCon VARCHAR(100) DEFAULT 'Sin descripcion',
+    estMatCon ENUM('Roto', 'Desgastado', 'Regular') NOT NULL DEFAULT 'Regular',
+    disposicion ENUM('En stock', 'Prestada') NOT NULL DEFAULT 'En stock',
+
+    CONSTRAINT pk_cveMatCon PRIMARY KEY (cveMatCon)
+);
+
+
+
+INSERT INTO Alumno (numConAlu, apePatAlu, apeMatAlu, nomAlu) VALUES
+('1224100931', 'Gutiérrez', 'Vargas', 'Natalia'),
+('1224100932', 'López', 'Martínez', 'Carlos'),
+('1224100933', 'Hernández', 'Ramírez', 'Sofía');
+
+INSERT INTO Docente (numTraDoc, nom, apePat, apeMat) VALUES
+(1001, 'María', 'Castillo', 'Gómez'),
+(1002, 'Juan', 'Mendoza', 'Pérez'),
+(1003, 'Ana', 'Reyes','Zamora');
+
+INSERT INTO MaterialNoConsumible (cveMatNoCon, codUTNG, desMatNoCon, estMatNoCon, disposicion) VALUES
+(1, 'NC001', 'Proyector Epson', 'Regular', 'En stock'),
+(2, 'NC002', 'Microscopio óptico', 'Desgastado', 'Prestada'),
+(3, 'NC003', 'Multímetro digital', 'Roto','En stock');
+
+INSERT INTO MaterialConsumible (cveMatCon, desMatCon, estMatCon, disposicion) VALUES
+(1, 'Marcadores para pizarrón', 'Regular', 'En stock'),
+(2, 'Pilas AA', 'Desgastado', 'Prestada'),
+(3, 'Alcohol isopropílico', 'Regular','En stock');
+
+
+CREATE TABLE IF NOT EXISTS herramientaconsumible (
+    idHerramienta INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    ubicacion VARCHAR(100) NOT NULL,
+    descripcion TEXT,
+    estado ENUM('BUENO', 'ROTO', 'MANTENIMIENTO') NOT NULL
+);
+
+-- Insertar datos de prueba
+INSERT INTO herramientaconsumible (nombre, ubicacion, descripcion, estado) VALUES
+('Martillo de acero', 'Bodega A', 'Cabeza de acero, mango de madera', 'ROTO'),
+('Desarmador plano', 'Taller 1', 'Punta desgastada', 'ROTO'),
+('Sierra manual', 'Bodega B', 'Filo roto', 'ROTO'),
+('Llave inglesa', 'Taller 2', 'En buen estado', 'BUENO'),
+('Pinzas', 'Almacén', 'Oxidadas', 'MANTENIMIENTO');
+
+-- Crear tabla herramientanoconsumible
+CREATE TABLE IF NOT EXISTS herramientanoconsumible (
+    idHerramienta INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    ubicacion VARCHAR(100) NOT NULL,
+    descripcion TEXT,
+    estado ENUM('BUENO', 'ROTO', 'MANTENIMIENTO') NOT NULL
+);
+
+-- Insertar datos de prueba
+INSERT INTO herramientanoconsumible (nombre, ubicacion, descripcion, estado) VALUES
+('Taladro eléctrico', 'Bodega C', 'No enciende', 'ROTO'),
+('Multímetro digital', 'Laboratorio', 'Pantalla rota', 'ROTO'),
+('Calibrador Vernier', 'Taller Mecánico', 'Desajustado', 'ROTO'),
+('Soldadora', 'Área de soldadura', 'En buen estado', 'BUENO'),
+('Compresor de aire', 'Bodega D', 'Mantenimiento programado', 'MANTENIMIENTO');

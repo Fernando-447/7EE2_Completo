@@ -55,7 +55,11 @@ public class HerramientasRotas extends javax.swing.JFrame {
      * Creates new form HerramientasRotas
      */
     public HerramientasRotas() {
+        setUndecorated(true);
+
         initComponents();
+        setLocationRelativeTo(null);
+
         // Agrupar radio buttons
         ButtonGroup grupoBotones = new ButtonGroup();
         grupoBotones.add(rbHerramientasConsumibles);
@@ -63,7 +67,6 @@ public class HerramientasRotas extends javax.swing.JFrame {
 
         rbHerramientasConsumibles.setSelected(true);  // Seleccionado por defecto
         cargarHerramientasConsumiblesEnTabla(tbl_Datos);
-        configurarFiltro(tbl_Datos, txtBuscador);
 
     }
     // metodo para mostrar todas las herramientas  no consumibles rotas 
@@ -90,6 +93,8 @@ public class HerramientasRotas extends javax.swing.JFrame {
 
         // Asignar modelo a la tabla
         tbl_Datos.setModel(modelo);
+        configurarFiltro(tbl_Datos, txtBuscador);
+
     }
 
     // metodo para mostrar todas las herramientas consumibles rotas 
@@ -116,6 +121,8 @@ public class HerramientasRotas extends javax.swing.JFrame {
 
         // Asignar modelo a la tabla
         tbl_Datos.setModel(modelo);
+         configurarFiltro(tbl_Datos, txtBuscador);
+
     }
 
     //PDF
@@ -326,8 +333,8 @@ public class HerramientasRotas extends javax.swing.JFrame {
         txtBuscador = new javax.swing.JTextField();
         jButton2 = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
+        jButton3 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        lblRegresar = new javax.swing.JLabel();
         jRadioButton1 = new javax.swing.JRadioButton();
         rbHerramientasConsumibles = new javax.swing.JRadioButton();
 
@@ -336,9 +343,7 @@ public class HerramientasRotas extends javax.swing.JFrame {
         jPanel1.setBackground(new java.awt.Color(0, 51, 102));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        tbl_Datos.setBackground(new java.awt.Color(255, 255, 255));
         tbl_Datos.setFont(new java.awt.Font("Roboto Condensed", 0, 12)); // NOI18N
-        tbl_Datos.setForeground(new java.awt.Color(0, 0, 0));
         tbl_Datos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},
@@ -354,65 +359,66 @@ public class HerramientasRotas extends javax.swing.JFrame {
         tbl_Datos.setSelectionBackground(new java.awt.Color(0, 51, 153));
         jScrollPane1.setViewportView(tbl_Datos);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 140, 800, 190));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 170, 800, 210));
 
-        txtBuscador.setBackground(new java.awt.Color(255, 255, 255));
-        txtBuscador.setForeground(new java.awt.Color(0, 0, 0));
-        txtBuscador.setText("Buscar");
         txtBuscador.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtBuscadorActionPerformed(evt);
             }
         });
-        jPanel1.add(txtBuscador, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 70, 790, 20));
+        jPanel1.add(txtBuscador, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 100, 790, 30));
 
         jButton2.setBackground(new java.awt.Color(51, 153, 0));
-        jButton2.setFont(new java.awt.Font("Roboto Condensed SemiBold", 0, 12)); // NOI18N
+        jButton2.setFont(new java.awt.Font("Roboto Condensed SemiBold", 1, 12)); // NOI18N
+        jButton2.setForeground(new java.awt.Color(255, 255, 255));
         jButton2.setText("DESCARGAR");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 350, 100, 30));
+        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 400, 120, 30));
 
         jPanel3.setBackground(new java.awt.Color(0, 0, 51));
 
-        jLabel1.setFont(new java.awt.Font("Roboto Condensed Black", 0, 24)); // NOI18N
+        jButton3.setBackground(new java.awt.Color(0, 0, 51));
+        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/zImagenes/regresar.png"))); // NOI18N
+        jButton3.setBorder(null);
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setFont(new java.awt.Font("Roboto Condensed Black", 1, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("HERRAMIENTAS ROTAS");
-
-        lblRegresar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/zImagenes/regresar.png"))); // NOI18N
-        lblRegresar.setText("jLabel2");
-        lblRegresar.setMaximumSize(new java.awt.Dimension(40, 40));
-        lblRegresar.setMinimumSize(new java.awt.Dimension(40, 40));
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(27, 27, 27)
-                .addComponent(lblRegresar, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(239, 239, 239)
+                .addGap(22, 22, 22)
+                .addComponent(jButton3)
+                .addGap(261, 261, 261)
                 .addComponent(jLabel1)
-                .addContainerGap(322, Short.MAX_VALUE))
+                .addContainerGap(265, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(lblRegresar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jLabel1)))
-                .addGap(14, 14, 14))
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(22, 22, 22)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton3)
+                    .addComponent(jLabel1))
+                .addContainerGap(18, Short.MAX_VALUE))
         );
 
-        jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 870, 60));
+        jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 870, 80));
 
         jRadioButton1.setBackground(new java.awt.Color(0, 51, 102));
+        jRadioButton1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jRadioButton1.setForeground(new java.awt.Color(255, 255, 255));
         jRadioButton1.setText("HerramientasNoConsumibles");
         jRadioButton1.setBorder(null);
@@ -421,9 +427,10 @@ public class HerramientasRotas extends javax.swing.JFrame {
                 jRadioButton1ActionPerformed(evt);
             }
         });
-        jPanel1.add(jRadioButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 100, -1, -1));
+        jPanel1.add(jRadioButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 140, -1, -1));
 
         rbHerramientasConsumibles.setBackground(new java.awt.Color(0, 51, 102));
+        rbHerramientasConsumibles.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         rbHerramientasConsumibles.setForeground(new java.awt.Color(255, 255, 255));
         rbHerramientasConsumibles.setText("HerramientasConsumibles");
         rbHerramientasConsumibles.setBorder(null);
@@ -432,7 +439,7 @@ public class HerramientasRotas extends javax.swing.JFrame {
                 rbHerramientasConsumiblesActionPerformed(evt);
             }
         });
-        jPanel1.add(rbHerramientasConsumibles, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 100, -1, -1));
+        jPanel1.add(rbHerramientasConsumibles, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 140, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -444,7 +451,9 @@ public class HerramientasRotas extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 402, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
@@ -466,6 +475,10 @@ public class HerramientasRotas extends javax.swing.JFrame {
     private void txtBuscadorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBuscadorActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtBuscadorActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -504,12 +517,12 @@ public class HerramientasRotas extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JRadioButton jRadioButton1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JLabel lblRegresar;
     private javax.swing.JRadioButton rbHerramientasConsumibles;
     private javax.swing.JTable tbl_Datos;
     private javax.swing.JTextField txtBuscador;

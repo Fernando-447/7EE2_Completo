@@ -22,7 +22,8 @@ public class RegistroDocente extends javax.swing.JFrame {
             // Validación simple de campos vacíos
             if (txtNombreDoc.getText().trim().isEmpty()
                     || txtApellidoMDoc.getText().trim().isEmpty()
-                    || txtApellidoPDoc.getText().trim().isEmpty()) {
+                    || txtApellidoPDoc.getText().trim().isEmpty()
+                    || jTextField1.getText().trim().isEmpty()) {
 
                 JOptionPane.showMessageDialog(this,
                         "Todos los campos son obligatorios.",
@@ -31,8 +32,30 @@ public class RegistroDocente extends javax.swing.JFrame {
                 return;
             }
 
+            // Validación de que nombre y apellidos solo tengan letras
+            if (!txtNombreDoc.getText().matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]+")
+                    || !txtApellidoMDoc.getText().matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]+")
+                    || !txtApellidoPDoc.getText().matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]+")) {
+
+                JOptionPane.showMessageDialog(this,
+                        "Nombre y apellidos solo deben contener letras.",
+                        "Tipo de dato incorrecto",
+                        JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            // Validación de que el campo jTextField1 tenga solo números (si es un número de trabajador, por ejemplo)
+            if (!jTextField1.getText().matches("\\d+")) {
+                JOptionPane.showMessageDialog(this,
+                        "El número de trabajador debe contener solo dígitos.",
+                        "Tipo de dato incorrecto",
+                        JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
             // Crear modelo y llenar con datos del formulario
             DocenteModelo docente = new DocenteModelo();
+            docente.setNumTraDoc(Integer.parseInt(jTextField1.getText()));
             docente.setNombre(txtNombreDoc.getText().trim());
             docente.setApellidoPaterno(txtApellidoMDoc.getText().trim());
             docente.setApellidoMaterno(txtApellidoPDoc.getText().trim());
@@ -41,10 +64,10 @@ public class RegistroDocente extends javax.swing.JFrame {
             boolean registrado = dao.insertarDocente(docente);
 
             if (registrado) {
-                JOptionPane.showMessageDialog(this,
-                        "Docente registrado correctamente.",
-                        "Éxito",
-                        JOptionPane.INFORMATION_MESSAGE);
+
+                RegistroExitosoDocente vista = new RegistroExitosoDocente();
+                vista.setLocationRelativeTo(null);
+                vista.setVisible(true);
             } else {
                 JOptionPane.showMessageDialog(this,
                         "No se pudo registrar el docente.",
@@ -68,6 +91,8 @@ public class RegistroDocente extends javax.swing.JFrame {
      * Creates new form RegistroDocente
      */
     public RegistroDocente() {
+        setUndecorated(true);
+
         initComponents();
 
     }
@@ -91,6 +116,9 @@ public class RegistroDocente extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
+        jButton3 = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        jTextField1 = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -106,63 +134,90 @@ public class RegistroDocente extends javax.swing.JFrame {
                 jButton1ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 180, -1, -1));
+        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 370, 110, 40));
 
-        txtNombreDoc.setBackground(new java.awt.Color(255, 255, 255));
         txtNombreDoc.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtNombreDocActionPerformed(evt);
             }
         });
-        jPanel1.add(txtNombreDoc, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 80, 310, 20));
+        jPanel1.add(txtNombreDoc, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 140, 460, 30));
+        jPanel1.add(txtApellidoMDoc, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 200, 460, 30));
 
-        txtApellidoMDoc.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel1.add(txtApellidoMDoc, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 110, 310, 20));
-
-        txtApellidoPDoc.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel1.add(txtApellidoPDoc, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 140, 310, 20));
+        txtApellidoPDoc.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtApellidoPDocActionPerformed(evt);
+            }
+        });
+        jPanel1.add(txtApellidoPDoc, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 260, 460, 30));
 
         jLabel4.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel4.setFont(new java.awt.Font("Roboto Condensed ExtraBold", 0, 12)); // NOI18N
+        jLabel4.setFont(new java.awt.Font("Roboto Condensed ExtraBold", 1, 14)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel4.setText("Apellido Materno");
-        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 140, 100, -1));
+        jLabel4.setText("Apellido Materno:");
+        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 270, 140, -1));
 
         jLabel3.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel3.setFont(new java.awt.Font("Roboto Condensed ExtraBold", 0, 12)); // NOI18N
+        jLabel3.setFont(new java.awt.Font("Roboto Condensed ExtraBold", 1, 14)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel3.setText("Apellido Paterno ");
-        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 110, 100, -1));
+        jLabel3.setText("Apellido Paterno:");
+        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 200, 140, -1));
 
         jLabel1.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel1.setFont(new java.awt.Font("Roboto Condensed ExtraBold", 0, 12)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Roboto Condensed ExtraBold", 1, 14)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("Nombre ");
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 80, 60, -1));
+        jLabel1.setText("Nombre :");
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 150, 80, -1));
 
         jPanel4.setBackground(new java.awt.Color(0, 0, 51));
 
-        jLabel5.setFont(new java.awt.Font("Roboto Condensed Black", 0, 24)); // NOI18N
+        jLabel5.setFont(new java.awt.Font("Roboto Condensed Black", 1, 24)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("REGISTRAR DOCENTE");
+
+        jButton3.setBackground(new java.awt.Color(0, 0, 51));
+        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/zImagenes/regresar.png"))); // NOI18N
+        jButton3.setBorder(null);
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addContainerGap(183, Short.MAX_VALUE)
-                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(176, 176, 176))
+                .addGap(49, 49, 49)
+                .addComponent(jButton3)
+                .addGap(197, 197, 197)
+                .addComponent(jLabel5)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addContainerGap(15, Short.MAX_VALUE)
-                .addComponent(jLabel5)
-                .addContainerGap())
+                .addContainerGap(41, Short.MAX_VALUE)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton3)
+                    .addComponent(jLabel5))
+                .addGap(29, 29, 29))
         );
 
-        jPanel1.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(-10, 0, 580, 50));
+        jPanel1.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(-10, 0, 780, 110));
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel2.setText("No.Docente:");
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 330, -1, -1));
+
+        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField1ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 322, 460, 30));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -170,11 +225,11 @@ public class RegistroDocente extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 564, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 770, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 441, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
@@ -189,6 +244,18 @@ public class RegistroDocente extends javax.swing.JFrame {
     private void txtNombreDocActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombreDocActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtNombreDocActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void txtApellidoPDocActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtApellidoPDocActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtApellidoPDocActionPerformed
+
+    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -228,12 +295,15 @@ public class RegistroDocente extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField txtApellidoMDoc;
     private javax.swing.JTextField txtApellidoPDoc;
     private javax.swing.JTextField txtNombreDoc;

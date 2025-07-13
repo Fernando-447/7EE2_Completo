@@ -11,6 +11,7 @@ package vista;
 import vista.RegistroDocente.Docente;
 import vista.Alumnos.Alumno;
 import vista.HerramientasRotas.HerramientasRotas;
+
 public class DashBoard extends javax.swing.JFrame {
 
     /**
@@ -18,6 +19,8 @@ public class DashBoard extends javax.swing.JFrame {
      */
     public DashBoard() {
         initComponents();
+        setLocationRelativeTo(null);
+
     }
 
     /**
@@ -48,31 +51,37 @@ public class DashBoard extends javax.swing.JFrame {
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         btnDocentes.setBackground(new java.awt.Color(0, 0, 102));
+        btnDocentes.setForeground(new java.awt.Color(255, 255, 255));
         btnDocentes.setText("DOCENTES");
+        btnDocentes.setBorder(null);
         btnDocentes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDocentesActionPerformed(evt);
             }
         });
-        jPanel2.add(btnDocentes, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 220, -1));
+        jPanel2.add(btnDocentes, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 220, 30));
 
         btnImpriRotas.setBackground(new java.awt.Color(0, 0, 102));
+        btnImpriRotas.setForeground(new java.awt.Color(255, 255, 255));
         btnImpriRotas.setText("IMPRIMIR HERRAMIENTAS ROTAS");
+        btnImpriRotas.setBorder(null);
         btnImpriRotas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnImpriRotasActionPerformed(evt);
             }
         });
-        jPanel2.add(btnImpriRotas, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 40, 220, -1));
+        jPanel2.add(btnImpriRotas, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 60, 220, 30));
 
         btnAlumnos.setBackground(new java.awt.Color(0, 0, 102));
+        btnAlumnos.setForeground(new java.awt.Color(255, 255, 255));
         btnAlumnos.setText("ALUMNOS");
+        btnAlumnos.setBorder(null);
         btnAlumnos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAlumnosActionPerformed(evt);
             }
         });
-        jPanel2.add(btnAlumnos, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 20, 220, -1));
+        jPanel2.add(btnAlumnos, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 30, 220, 30));
 
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 90, 220, 510));
 
@@ -96,20 +105,23 @@ public class DashBoard extends javax.swing.JFrame {
 
     private void btnDocentesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDocentesActionPerformed
         // TODO add your handling code here:
-      Docente registroDocentes=new Docente();
-      registroDocentes.setVisible(true);
+        Docente registroDocentes = new Docente();
+        registroDocentes.setLocationRelativeTo(null); // Mismo lugar
+        registroDocentes.setVisible(true);
     }//GEN-LAST:event_btnDocentesActionPerformed
 
     private void btnImpriRotasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImpriRotasActionPerformed
         // TODO add your handling code here:
-       HerramientasRotas imprimirRotas=new HerramientasRotas();
-       imprimirRotas.setVisible(true);
+        HerramientasRotas imprimirRotas = new HerramientasRotas();
+        imprimirRotas.setLocationRelativeTo(null); // Mismo lugar
+        imprimirRotas.setVisible(true);
     }//GEN-LAST:event_btnImpriRotasActionPerformed
 
     private void btnAlumnosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlumnosActionPerformed
         // TODO add your handling code here:
-      Alumno registroDocentes=new Alumno();
-      registroDocentes.setVisible(true);
+        Alumno registroAlumnos = new Alumno();
+        registroAlumnos.setLocationRelativeTo(null); // Mismo lugar
+        registroAlumnos.setVisible(true);
     }//GEN-LAST:event_btnAlumnosActionPerformed
 
     /**
