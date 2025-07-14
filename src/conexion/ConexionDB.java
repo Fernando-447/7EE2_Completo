@@ -21,7 +21,7 @@ public class ConexionDB {
                 conn = DriverManager.getConnection(
                     "jdbc:mysql://localhost:3306/ProyectoV3", 
                     "root", 
-                    "Linux12345"
+                    "linux123"
                 );
                 System.out.println("Conexión exitosa a la BD");
             } catch (ClassNotFoundException | SQLException e) {
