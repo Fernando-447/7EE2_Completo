@@ -10,57 +10,27 @@ package modelo;
  */
 public class HerramientasRotasModelo {
    private String nombre; 
-   private String ubicacion;
    private String descripcion;
-   private int id;
-   private byte[]imagenHeramienta;
+   private String id;
    private String estado;
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
    
-   //ConstructorVacio
    public HerramientasRotasModelo(){};
-   
-   
-   //Constructor
 
-    public HerramientasRotasModelo(String nombre, String ubicacion, String descripcion, byte[] imagenHeramienta,String estado,int id){
+    public HerramientasRotasModelo(String nombre, String descripcion, String id, String estado) {
         this.nombre = nombre;
-        this.id = id;
-        this.ubicacion = ubicacion;
         this.descripcion = descripcion;
-        this.imagenHeramienta = imagenHeramienta;
-        this.estado=estado;
+        this.id = id;
+        this.estado = estado;
     }
-//Getters setters 
+   
+   
+
     public String getNombre() {
         return nombre;
     }
 
-    public void setEstado(String estado) {
-        this.estado = estado;
-    }
-
-    public String getEstado() {
-        return estado;
-    }
-
     public void setNombre(String nombre) {
         this.nombre = nombre;
-    }
-
-    public String getUbicacion() {
-        return ubicacion;
-    }
-
-    public void setUbicacion(String ubicacion) {
-        this.ubicacion = ubicacion;
     }
 
     public String getDescripcion() {
@@ -71,14 +41,20 @@ public class HerramientasRotasModelo {
         this.descripcion = descripcion;
     }
 
-    public byte[] getImagenHeramienta() {
-        return imagenHeramienta;
+    public String getId() {
+        return id;
     }
 
-    public void setImagenHeramienta(byte[] imagenHeramienta) {
-        this.imagenHeramienta = imagenHeramienta;
+    public void setId(String id) {
+        this.id = id;
     }
-   
-   
-   
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
 }
+   

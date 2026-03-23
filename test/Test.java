@@ -1,7 +1,7 @@
 
 import vista.Alumnos.Alumno;
-import vista.HerramientasRotas.HerramientasRotas;
-import vista.RegistroDocente.Docente;
+import vista.Herramientas.HerramientasRotas;
+import vista.Docente.Docente;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license

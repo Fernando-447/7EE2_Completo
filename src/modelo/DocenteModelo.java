@@ -57,7 +57,9 @@ public class DocenteModelo {
         this.apellidoMaterno = apellidoMaterno;
     }
     
-    
-    
+    @Override
+    public String toString(){
+        return this.nombre;
+    }
     
 }

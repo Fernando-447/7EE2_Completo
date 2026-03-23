@@ -56,5 +56,8 @@ public class AlumnoModelo {
         
     }
     
-    
+    @Override
+    public String toString(){
+        return this.nombre;
+    }
 }

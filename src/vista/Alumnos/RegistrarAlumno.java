@@ -21,6 +21,7 @@ public class RegistrarAlumno extends javax.swing.JFrame {
      */
     public RegistrarAlumno() {
         setUndecorated(true);
+        
 
         initComponents();
         setLocationRelativeTo(null);
@@ -46,6 +47,14 @@ public class RegistrarAlumno extends javax.swing.JFrame {
                     JOptionPane.ERROR_MESSAGE);
         }
     }
+    public void limpiarCampos() {
+    txtNombre.setText("");
+    txtApellidoPa.setText("");
+    txtApellidoMa.setText("");
+    txtNoControl.setText("");
+    
+}
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -175,6 +184,7 @@ public class RegistrarAlumno extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         insertarNuevoAlumno();
+        limpiarCampos();
         this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -207,6 +217,8 @@ public class RegistrarAlumno extends javax.swing.JFrame {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(RegistrarAlumno.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 

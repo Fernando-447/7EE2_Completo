@@ -44,8 +44,8 @@ public class DetailAlumno extends javax.swing.JFrame {
 
     }
 
-    ;
-    
+   
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -231,6 +231,7 @@ public class DetailAlumno extends javax.swing.JFrame {
         vistaEliminar.setLocationRelativeTo(null);  // <-- Agregado para posición igual
         vistaEliminar.setVisible(true);
         this.dispose();
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
@@ -266,6 +267,8 @@ public class DetailAlumno extends javax.swing.JFrame {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(DetailAlumno.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 

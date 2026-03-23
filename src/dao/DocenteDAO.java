@@ -16,8 +16,22 @@ import modelo.DocenteModelo;
  */
 public class DocenteDAO {
 
-    ConexionDB conn = new ConexionDB();
-    Connection conexion = conn.getConexion();
+    //ConexionDB conn = new ConexionDB();
+    //Connection conexion = conn.getConexion();
+    ConexionDB conexionDB = new ConexionDB();
+    Connection conexion = conexionDB.getConexion();
+    //public DocenteDAO() {
+      //  try {
+        //    ConexionDB conn = new ConexionDB(); // Crear instancia de ConexionDB
+          //  this.conexion = conn.getConexion(); // Obtener la conexión
+            //if (this.conexion == null) {
+    //            throw new SQLException("No se pudo establecer la conexión a la base de datos");
+      //      }
+        //} catch (SQLException e) {
+          //  e.printStackTrace();  // Manejamos el error de conexión
+            // Puedes agregar más lógica para manejar el fallo de la conexión aquí, como lanzar una excepción personalizada.
+        //}
+    //}
 
     // Insertar un docente nuevo
     public boolean insertarDocente(DocenteModelo docente) {
@@ -35,12 +49,12 @@ public class DocenteDAO {
         }
     }
 
+    // Obtener todos los docentes
     public List<DocenteModelo> obtenerTodosLosDocentes() {
         List<DocenteModelo> lista = new ArrayList<>();
         String sql = "SELECT numTraDoc, nom, apePat, apeMat FROM docente";
 
         try (PreparedStatement stmt = conexion.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
-
             while (rs.next()) {
                 DocenteModelo docente = new DocenteModelo();
                 docente.setNumTraDoc(rs.getInt("numTraDoc"));
@@ -49,14 +63,29 @@ public class DocenteDAO {
                 docente.setApellidoMaterno(rs.getString("apeMat"));
                 lista.add(docente);
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return lista;
+    }
+    
+    public List<String> obtenerDocenteNomCom() {
+        List<String> lista = new ArrayList<>();
+        String sql = "SELECT numTraDoc, CONCAT( nom,' ',apePat,' ',apeMat) AS nomCom FROM docente";
 
+        try (PreparedStatement stmt = conexion.prepareStatement(sql); 
+                ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                String docente = rs.getString("numTraDoc")+ "-" + rs.getString("nomCom");
+                lista.add(docente);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return lista;
     }
 
+    // Obtener docente por ID
     public DocenteModelo obtenerDocentePorId(int numTraDoc) {
         String sql = "SELECT numTraDoc, nom, apePat, apeMat FROM Docente WHERE numTraDoc = ?";
 
@@ -72,14 +101,13 @@ public class DocenteDAO {
                 docente.setApellidoMaterno(rs.getString("apeMat"));
                 return docente;
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return null;
     }
 
+    // Actualizar docente por ID
     public boolean actualizarDocentePorId(int numTraDoc, DocenteModelo docenteActualizado) {
         String sql = "UPDATE Docente SET nom = ?, apePat = ?, apeMat = ? WHERE numTraDoc = ?";
         try (PreparedStatement stmt = conexion.prepareStatement(sql)) {
@@ -96,6 +124,7 @@ public class DocenteDAO {
         }
     }
 
+    // Eliminar docente por ID
     public boolean eliminarDocentePorId(int numTraDoc) {
         String sql = "DELETE FROM Docente WHERE numTraDoc = ?";
         try (PreparedStatement stmt = conexion.prepareStatement(sql)) {
@@ -107,5 +136,4 @@ public class DocenteDAO {
             return false;
         }
     }
-
 }

@@ -15,19 +15,18 @@ public class ConexionDB {
     private static Connection conn = null;
 
     public static Connection getConexion() {
-        if (conn == null) {
             try {
                 Class.forName("com.mysql.cj.jdbc.Driver");
                 conn = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/ProyectoV3", 
+                    "jdbc:mysql://localhost:3306/ProyectoInventario7EE2", 
                     "root", 
-                    "linux123"
+                    "PZPV46s#9h#8gFk@fEf3"
                 );
                 System.out.println("Conexión exitosa a la BD");
             } catch (ClassNotFoundException | SQLException e) {
                 System.err.println("Error de conexión: " + e.getMessage());
+                return null;
             }
-        }
         return conn;
     }
 

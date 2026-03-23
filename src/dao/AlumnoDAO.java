@@ -15,10 +15,28 @@ import java.util.List;
  * @author nataly
  */
 public class AlumnoDAO {
+    //private ConexionDB conn;
+    //private Connection conexion;
+    //private ConexionDB conexion = new ConexionDB();
+    //private final Connection conexion;
+    //ConexionDB conn = new ConexionDB();
+    //Connection conexion = conn.getConexion();
+    ConexionDB conexionDB = new ConexionDB();
+    Connection conexion = conexionDB.getConexion();
+    // Constructor modificado: ahora lanza SQLException
+    //public AlumnoDAO() throws SQLException {
+      //  this.conexion = new ConexionDB();
+        //this.conexion = conn.getConexion();
 
-    ConexionDB conn = new ConexionDB();
-    Connection conexion = conn.getConexion();
+       // if (this.conexion == null) {
+         //   throw new SQLException("Error: No se pudo establecer la conexión con la base de datos.");
+        //}
+    //}
 
+    Connection conn = null;
+    PreparedStatement stmt = null;
+    ResultSet rs = null;
+    
     public boolean insertarAlumno(AlumnoModelo alumno) {
         String sql = "INSERT INTO alumno (nomAlu, apePatAlu, apeMatAlu, numConAlu) VALUES (?, ?, ?, ?)";
 
@@ -42,8 +60,12 @@ public class AlumnoDAO {
     public List<AlumnoModelo> obtenerTodosLosAlumnos() {
         List<AlumnoModelo> lista = new ArrayList<>();
         String sql = "SELECT * FROM alumno";
-        try (PreparedStatement stmt = conexion.prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
+        
+        try (
+            Connection conn = ConexionDB.getConexion();
+            PreparedStatement stmt = conn.prepareStatement(sql); 
+            ResultSet rs = stmt.executeQuery()) {
+  
             while (rs.next()) {
                 AlumnoModelo alumno = new AlumnoModelo();
                 alumno.setNombre(rs.getString("nomAlu"));
@@ -51,6 +73,25 @@ public class AlumnoDAO {
                 alumno.setApellidoMaterno(rs.getString("apeMatAlu"));
                 alumno.setNoControl(rs.getInt("numConAlu"));
                 lista.add(alumno);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return lista;
+    }
+    
+    public List<Integer> obtenerNumControl() {
+        List<Integer> lista = new ArrayList<>();
+        String sql = "SELECT numConAlu FROM alumno";
+        
+        try (
+            Connection conn = ConexionDB.getConexion();
+            PreparedStatement stmt = conn.prepareStatement(sql); 
+            ResultSet rs = stmt.executeQuery()) {
+  
+            while (rs.next()) {
+                
+                lista.add(rs.getInt("numConAlu"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -108,7 +149,3 @@ public class AlumnoDAO {
         }
     }
 }
-
-    
-    
-    

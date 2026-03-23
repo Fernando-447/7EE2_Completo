@@ -5,7 +5,10 @@
 package vista.Alumnos;
 
 import dao.AlumnoDAO;
+import java.sql.SQLException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -15,6 +18,7 @@ import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 import modelo.AlumnoModelo;
+import vista.DashBoard;
 
 /**
  *
@@ -24,6 +28,7 @@ public class Alumno extends javax.swing.JFrame {
 
     RegistrarAlumno vista = new RegistrarAlumno();
     AlumnoDAO alumnos = new AlumnoDAO();
+    //DashBoard vistaDash = new DashBoard();
 
     /**
      * Creates new form RegistrarAlumno
@@ -250,6 +255,7 @@ public class Alumno extends javax.swing.JFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
     this.dispose();
+    
     }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
@@ -277,6 +283,8 @@ public class Alumno extends javax.swing.JFrame {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(Alumno.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
