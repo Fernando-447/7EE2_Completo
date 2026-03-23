@@ -34,6 +34,6 @@ Este sistema centraliza el trabajo de múltiples partes bajo mi arquitectura MVC
 
 ## 📄 Licencia
 
-**© 2025 Vega Negrete Fernando. Todos los derechos reservados.**
+**© 2026 Vega Negrete Fernando. Todos los derechos reservados.**
 
 Este proyecto fue desarrollado como parte del curso de Programación Orientada a Objetos y Proyecto Integrador en la UTNG. El código fuente es privado y no se permite su uso, distribución o modificación sin autorización del autor.
